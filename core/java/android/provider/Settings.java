@@ -8861,6 +8861,11 @@ public final class Settings {
         public static final String NIGHT_BRIGHTNESS_VALUE = "night_brightness_value";
 
         /**
+         * @hide
+         */
+        public static final String DEVICE_HOSTNAME = "device_hostname";
+
+        /**
          * Display style of the status bar battery information
          * 0: Display the battery an icon in portrait mode
          * 1: Display the battery as a circle
