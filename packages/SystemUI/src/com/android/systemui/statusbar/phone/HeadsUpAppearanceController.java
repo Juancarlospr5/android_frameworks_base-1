@@ -16,8 +16,12 @@
 
 package com.android.systemui.statusbar.phone;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.view.DisplayCutout;
 import android.view.View;
 import android.view.WindowInsets;
@@ -209,6 +213,8 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
     }
 
     private void setShown(boolean isShown) {
+        final int clockStyle = Settings.System.getIntForUser(mClockView.getContext().getContentResolver(),
+                Settings.System.STATUSBAR_CLOCK_STYLE, 0, UserHandle.USER_CURRENT);
         if (mShown != isShown) {
             View clockView = mClockController.getClock();
             boolean isRightClock = clockView.getId() == R.id.clock_right;
@@ -222,9 +228,11 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
                             0 /* delay */, () -> clockView.setVisibility(View.INVISIBLE));
                 }
             } else {
-                if (!isRightClock) {
-                    CrossFadeHelper.fadeIn(clockView, CONTENT_FADE_DURATION /* duration */,
+                if (clockStyle == 0) {
+                    CrossFadeHelper.fadeIn(mClockView, CONTENT_FADE_DURATION /* duration */,
                             CONTENT_FADE_DELAY /* delay */);
+                } else {
+                    mClockView.setVisibility(View.GONE);
                 }
                 CrossFadeHelper.fadeOut(mHeadsUpStatusBarView, CONTENT_FADE_DURATION/* duration */,
                         0 /* delay */, () -> mHeadsUpStatusBarView.setVisibility(View.GONE));
