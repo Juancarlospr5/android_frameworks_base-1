@@ -34,4 +34,7 @@
     <!-- Dash charging support -->
     <java-symbol type="bool" name="config_hasDashCharger" />
 
+    <!-- Screen record -->
+    <java-symbol type="bool" name="config_enableScreenrecordChord" />
+
 </resources>
