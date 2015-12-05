@@ -2380,6 +2380,7 @@
         <item>power</item>
         <item>restart</item>
         <item>bugreport</item>
+        <item>screenrecord</item>
         <item>users</item>
     </string-array>
 

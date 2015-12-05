@@ -44,7 +44,10 @@ import android.app.KeyguardManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+<<<<<<< HEAD
 import android.content.ContentResolver;
+=======
+>>>>>>> 0c88b0f... Add Screen Record to the Power Menu [1/2]
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -128,6 +131,10 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     private static final String TAG = "GlobalActionsDialog";
 
     private static final boolean SHOW_SILENT_TOGGLE = false;
+
+    /* Valid settings for global actions keys.
+     * see config.xml config_globalActionList */
+    private static final String GLOBAL_ACTION_KEY_SCREENRECORD = "screenrecord";
 
     private final Context mContext;
     private final GlobalActionsManager mWindowManagerFuncs;
@@ -463,6 +470,11 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
             } else if (GLOBAL_ACTION_KEY_RESTART_DOWNLOAD.equals(actionKey) &&
                     PowerMenuUtils.isAdvancedRestartPossible(mContext)) {
                 mItems.add(new RestartDownloadAction());
+            } else if (GLOBAL_ACTION_KEY_SCREENRECORD.equals(actionKey)) {
+                if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.POWERMENU_SCREENRECORD, 0) == 1) {
+                    mItems.add(getScreenrecordAction());
+                }
             } else {
                 Log.e(TAG, "Invalid global action key " + actionKey);
             }
@@ -676,6 +688,30 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
         public boolean showBeforeProvisioning() {
             return true;
         }
+    }
+
+    private Action getScreenrecordAction() {
+        return new SinglePressAction(com.android.systemui.R.drawable.ic_lock_screenrecord,
+                com.android.systemui.R.string.global_action_screenrecord) {
+
+            public void onPress() {
+                mHandler.sendEmptyMessage(MESSAGE_DISMISS);
+                /* wait for the dialog box to close */
+                try {
+                     Thread.sleep(1000); //1s
+                } catch (InterruptedException ie) {}
+
+                takeScreenrecord();
+            }
+
+            public boolean showDuringKeyguard() {
+                return true;
+            }
+
+            public boolean showBeforeProvisioning() {
+                return false;
+            }
+        };
     }
 
     private class BugReportAction extends SinglePressAction implements LongPressAction {
@@ -922,6 +958,7 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     }
 
     /**
+<<<<<<< HEAD
      * Functions needed for taking screenhots.
      * This leverages the built in screenshot functionality
      */
@@ -994,6 +1031,70 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
                         intent, conn, Context.BIND_AUTO_CREATE, UserHandle.CURRENT)) {
                 mScreenshotConnection = conn;
                 mHandler.postDelayed(mScreenshotTimeout, 10000);
+            }
+        }
+    }
+
+    /**
+     * functions needed for taking screen record.
+     */
+    final Object mScreenrecordLock = new Object();
+    ServiceConnection mScreenrecordConnection = null;
+
+    final Runnable mScreenrecordTimeout = new Runnable() {
+        @Override public void run() {
+            synchronized (mScreenrecordLock) {
+                if (mScreenrecordConnection != null) {
+                    mContext.unbindService(mScreenrecordConnection);
+                    mScreenrecordConnection = null;
+                }
+            }
+        }
+    };
+
+    private void takeScreenrecord() {
+       synchronized (mScreenrecordLock) {
+            if (mScreenrecordConnection != null) {
+                return;
+            }
+            ComponentName cn = new ComponentName("com.android.systemui",
+                    "com.android.systemui.omni.screenrecord.TakeScreenrecordService");
+            Intent intent = new Intent();
+            intent.setComponent(cn);
+            ServiceConnection conn = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    synchronized (mScreenrecordLock) {
+                        Messenger messenger = new Messenger(service);
+                        Message msg = Message.obtain(null, 1);
+                        final ServiceConnection myConn = this;
+                        Handler h = new Handler(mHandler.getLooper()) {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                synchronized (mScreenrecordLock) {
+                                    if (mScreenrecordConnection == myConn) {
+                                        mContext.unbindService(mScreenrecordConnection);
+                                        mScreenrecordConnection = null;
+                                        mHandler.removeCallbacks(mScreenrecordTimeout);
+                                    }
+                                }
+                            }
+                        };
+                        msg.replyTo = new Messenger(h);
+                        msg.arg1 = msg.arg2 = 0;
+                        try {
+                            messenger.send(msg);
+                        } catch (RemoteException e) {
+                        }
+                  }
+                }
+                @Override
+                public void onServiceDisconnected(ComponentName name) {}
+            };
+            if (mContext.bindServiceAsUser(
+                    intent, conn, Context.BIND_AUTO_CREATE, UserHandle.CURRENT)) {
+                mScreenrecordConnection = conn;
+                mHandler.postDelayed(mScreenrecordTimeout, 31 * 60 * 1000);
             }
         }
     }
