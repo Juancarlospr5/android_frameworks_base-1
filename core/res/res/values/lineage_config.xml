@@ -57,7 +57,7 @@
     <!-- Dash charging support -->
     <bool name="config_hasDashCharger">false</bool>
 
-    <!-- Screen record -->
+    <!-- Screenrecord -->
     <bool name="config_enableScreenrecordChord">true</bool>
 
 </resources>
