@@ -4299,7 +4299,7 @@ public final class Settings {
          * @hide
          */
         public static final String BATTERY_BAR_USE_GRADIENT_COLOR = "battery_bar_use_gradient_color";
-				
+	
         /**
          * @hide
          */
@@ -4522,6 +4522,13 @@ public final class Settings {
          * @hide
          */
         public static final String STATUSBAR_CLOCK_DATE_POSITION = "statusbar_clock_date_position";
+
+        /**
+         * Change fonts for the system lockscreen clock widget
+         *
+         * @hide
+         */
+        public static final String LOCK_CLOCK_FONTS = "lock_clock_fonts";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
