@@ -4042,10 +4042,18 @@ public final class Settings {
 
         /**
 	 * Enable/Disable screenshot sound
+         * @hide
 	 */
         public static final String SCREENSHOT_SOUND = "screenshot_sound";
 
-        /**"
+        /**
+         * Whether to enable status and navigation bar color in battery saver mode.
+         * Heads up timeout configuration
+         * @hide
+         */
+        public static final String HEADS_UP_TIMEOUT = "heads_up_timeout";
+
+        /**
          * Allow all rotations.
          * @hide
          */
