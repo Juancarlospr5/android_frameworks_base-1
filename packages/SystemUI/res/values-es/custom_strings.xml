@@ -66,4 +66,9 @@
     <!-- QS rows -->
     <string name="qs_menu_item_rows">Filas</string>
 
+    <!-- Expanded desktop QS Tile -->
+    <string name="quick_settings_expanded_desktop_label">Escritorio ampliado</string>
+    <string name="quick_settings_expanded_desktop">Expandido</string>
+    <string name="quick_settings_expanded_desktop_off">Normal</string>
+
 </resources>
