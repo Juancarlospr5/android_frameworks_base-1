@@ -35,6 +35,9 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.WindowManagerGlobal;
 
+import java.util.List;
+import java.util.Locale;
+
 import com.android.internal.statusbar.IStatusBarService;
 
 /**
@@ -143,5 +146,10 @@ public class ArsenicUtils {
         keyguardIntent.setPackage(SYSTEMUI_PACKAGE_NAME);
         keyguardIntent.putExtra(DISMISS_KEYGUARD_EXTRA_INTENT, launchIntent);
         context.sendBroadcastAsUser(keyguardIntent, user);
+    }
+
+    public static boolean isChineseLanguage() {
+       return Resources.getSystem().getConfiguration().locale.getLanguage().startsWith(
+               Locale.CHINESE.getLanguage());
     }
 }
