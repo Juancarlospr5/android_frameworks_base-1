@@ -4172,6 +4172,9 @@ public final class Settings {
         * @hide
         */
         public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
+        
+        public static final String POCKET_JUDGE = "pocket_judge";
+
 
         /**
           * Volume keys control cursor in text fields (default is 0)
