@@ -114,6 +114,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         if (mTileLayout instanceof PagedTileLayout) {
             ((PagedTileLayout) mTileLayout).setPageIndicator((PageIndicator) mPageIndicator);
         }
+        updateSettings();
 
         addDivider();
 
@@ -617,7 +618,15 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         int getOffsetTop(TileRecord tile);
 
         boolean updateResources();
+        void updateSettings();
 
         void setListening(boolean listening);
+    }
+
+
+    public void updateSettings() {
+        if (mTileLayout != null) {
+            mTileLayout.updateSettings();
+        }
     }
 }
