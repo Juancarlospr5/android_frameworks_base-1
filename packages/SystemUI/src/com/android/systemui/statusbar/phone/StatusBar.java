@@ -300,6 +300,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
     public static final String BERRY_GLOBAL_STYLE =
             "lineagesystem:" + LineageSettings.System.BERRY_GLOBAL_STYLE;
 
+    private static final String QS_TILE_TITLE_VISIBILITY =
+            "system:" + Settings.System.QS_TILE_TITLE_VISIBILITY;
+
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
     private static final String BANNER_ACTION_SETUP =
@@ -726,6 +729,7 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         mColorExtractor.addOnColorsChangedListener(this);
 
         final TunerService tunerService = Dependency.get(TunerService.class);
+        tunerService.addTunable(this, QS_TILE_TITLE_VISIBILITY);
         tunerService.addTunable(this, SCREEN_BRIGHTNESS_MODE);
         tunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
         tunerService.addTunable(this, LOCKSCREEN_MEDIA_METADATA);
@@ -6331,6 +6335,16 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
 
     @Override
     public void onTuningChanged(String key, String newValue) {
+        switch (key) {
+            case QS_TILE_TITLE_VISIBILITY:
+                if (mQSPanel != null) {
+                    mQSPanel.updateResources();
+                }
+                break;
+            default:
+                break;
+        }
+
         if (SCREEN_BRIGHTNESS_MODE.equals(key)) {
             mAutomaticBrightness = newValue != null && Integer.parseInt(newValue)
                     == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
