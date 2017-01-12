@@ -4126,6 +4126,12 @@ public final class Settings {
         public static final Validator LOCK_TO_APP_ENABLED_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Enable/Disable screenshot sound
+         * @hide
+         */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**
          * I am the lolrus.
          * <p>
          * Nonzero values indicate that the user has a bukkit.
@@ -4421,13 +4427,6 @@ public final class Settings {
          * @hide
          */
         public static final String SCREENSHOT_DEFAULT_MODE = "screenshot_default_mode";
-
-         /**
-          * Screenshod sound enable, This is the noise made when taking a screesnhot
-          * Defaults to 1 - sounds enabled
-          * @hide
-          */
-         public static final String SCREENSHOT_SHUTTER_SOUND = "screenshot_shutter_sound";
 
         /**
          * Sensor block per-package
