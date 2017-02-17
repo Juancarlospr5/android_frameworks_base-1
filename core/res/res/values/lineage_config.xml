@@ -60,4 +60,13 @@
     <!-- Screenrecord -->
     <bool name="config_enableScreenrecordChord">true</bool>
 
+    <!-- Define optional package verifier name -->
+    <string name="config_optionalPackageVerifierName" translatable="false"></string>
+
+    <!-- Sms authorization request to timeout -->
+    <integer name="config_sms_authorization_timeout_ms">0</integer>
+
+    <!-- Enable sms authorization framework -->
+    <bool name="config_sms_authorization_enabled">false</bool>
+
 </resources>
