@@ -350,7 +350,7 @@ public class KeyguardStatusView extends GridLayout implements
     }
 
     @Override
-    public void weatherError(int errorReason) {
+    public void weatherError() {
         // Do nothing
     }
 
