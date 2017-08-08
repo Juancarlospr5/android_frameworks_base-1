@@ -95,7 +95,7 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_SHOW_PINNING_TOAST_ESCAPE     = 46 << MSG_SHIFT;
     private static final int MSG_TOGGLE_CAMERA_FLASH           = 47 << MSG_SHIFT;
     private static final int MSG_RESTART_UI                    = 49 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_PIE_ORIENTATION = 43 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_PIE_ORIENTATION        = 50 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -170,6 +170,7 @@ public class CommandQueue extends IStatusBar.Stub {
         default void hideFingerprintDialog() { }
         default void toggleCameraFlash() { }
         default void restartUI() { }
+     	default void toggleOrientationListener(boolean enable) {}
     }
 
     @VisibleForTesting
