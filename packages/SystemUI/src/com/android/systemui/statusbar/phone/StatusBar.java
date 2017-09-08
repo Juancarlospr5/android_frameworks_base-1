@@ -2331,6 +2331,10 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             return false;
         }
 
+        if (mEntryManager.shouldSkipHeadsUp(sbn)) {
+            return false;
+        }
+
         if (sbn.getNotification().fullScreenIntent != null) {
             if (mAccessibilityManager.isTouchExplorationEnabled()) {
                 if (DEBUG) Log.d(TAG, "No peeking: accessible fullscreen: " + sbn.getKey());
@@ -5449,6 +5453,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_HEADER_STYLE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LESS_BORING_HEADS_UP),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5497,6 +5504,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                     Settings.System.QS_HEADER_STYLE))) {
                 stockQSHeaderStyle();
                 updateQSHeaderStyle();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LESS_BORING_HEADS_UP))) {
+                setUseLessBoringHeadsUp();
             }
         }
 
@@ -5513,6 +5523,7 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             setPulseBlacklist();
             updateTickerAnimation();
             updateTickerTickDuration();
+            setUseLessBoringHeadsUp();
         }
     }
 
@@ -5521,13 +5532,13 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                 	Settings.System.BATTERY_SAVER_DARK_MODE, 0,
                 	UserHandle.USER_CURRENT);
 
-	if (batterySaverDarkState == 0 & mBatteryController.isPowerSave())
-              mContext.getSystemService(UiModeManager.class)
-                          .setNightMode(UiModeManager.MODE_NIGHT_NO);
+	    if (batterySaverDarkState == 0 & mBatteryController.isPowerSave())
+            mContext.getSystemService(UiModeManager.class)
+                .setNightMode(UiModeManager.MODE_NIGHT_NO);
 
         else if (batterySaverDarkState == 1 & mBatteryController.isPowerSave())
-              mContext.getSystemService(UiModeManager.class)
-                          .setNightMode(UiModeManager.MODE_NIGHT_YES);
+            mContext.getSystemService(UiModeManager.class)
+                .setNightMode(UiModeManager.MODE_NIGHT_YES);
     }
 
     private void setQsRowsColumns() {
@@ -5556,6 +5567,25 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         if (mTicker != null) {
             mTicker.updateTickDuration(mTickerTickDuration);
         }
+    }
+
+    private void setFpToDismissNotifications() {
+        mFpDismissNotifications = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.FP_SWIPE_TO_DISMISS_NOTIFICATIONS, 0,
+                UserHandle.USER_CURRENT) == 1;
+    }
+
+    private void setPulseBlacklist() {
+        String blacklist = Settings.System.getStringForUser(mContext.getContentResolver(),
+                Settings.System.PULSE_APPS_BLACKLIST, UserHandle.USER_CURRENT);
+        getMediaManager().setPulseBlacklist(blacklist);
+    }
+
+    private void setUseLessBoringHeadsUp() {
+        boolean lessBoringHeadsUp = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.LESS_BORING_HEADS_UP, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mEntryManager.setUseLessBoringHeadsUp(lessBoringHeadsUp);
     }
 
     public int getWakefulnessState() {
@@ -6114,18 +6144,6 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
 
     public boolean isDeviceInVrMode() {
         return mVrMode;
-    }
-
-    private void setFpToDismissNotifications() {
-        mFpDismissNotifications = Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.FP_SWIPE_TO_DISMISS_NOTIFICATIONS, 0,
-                UserHandle.USER_CURRENT) == 1;
-    }
-
-    private void setPulseBlacklist() {
-        String blacklist = Settings.System.getStringForUser(mContext.getContentResolver(),
-                Settings.System.PULSE_APPS_BLACKLIST, UserHandle.USER_CURRENT);
-        getMediaManager().setPulseBlacklist(blacklist);
     }
 
     private final BroadcastReceiver mBannerActionBroadcastReceiver = new BroadcastReceiver() {
