@@ -41,4 +41,8 @@
 
     <!-- Whether notify fingerprint client of successful cancelled authentication -->
     <bool name="config_notifyClientOnFingerprintCancelSuccess">false</bool>
+
+    <!-- IME selector notification -->
+    <bool name="config_show_cmIMESwitcher">false</bool>
+
 </resources>
