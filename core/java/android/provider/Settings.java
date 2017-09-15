@@ -4333,6 +4333,7 @@ public final class Settings {
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 
         /**
+<<<<<<< HEAD
          * Whether to display sound panel in the power menu
          *
          * @hide
@@ -4408,12 +4409,6 @@ public final class Settings {
          * @hide
          */
         public static final String POWERMENU_LOCKDOWN = "powermenu_lockdown";
-
-        /**
-         * Toast icon
-         * @hide
-         */
-        public static final String TOAST_ICON = "toast_icon";
 
         /**
          * Whether to show the battery bar
@@ -5378,7 +5373,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(EGG_MODE);
             PRIVATE_SETTINGS.add(SHOW_BATTERY_PERCENT);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE);
-            PRIVATE_SETTINGS.add(TOAST_ICON);
             PRIVATE_SETTINGS.add(STATUS_BAR_CLOCK);
             PRIVATE_SETTINGS.add(STATUSBAR_CLOCK_STYLE);
             PRIVATE_SETTINGS.add(STATUS_BAR_CLOCK_SECONDS);
