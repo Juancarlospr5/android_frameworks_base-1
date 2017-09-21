@@ -68,7 +68,7 @@ LOCAL_PRIVILEGED_MODULE := true
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(LOCAL_PATH)/LineageManifest.xml
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
-LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res-keyguard $(LOCAL_PATH)/res
+LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res-keyguard $(LOCAL_PATH)/res $(LOCAL_PATH)/res-hwkeys
 
 ifneq ($(INCREMENTAL_BUILDS),)
     LOCAL_PROGUARD_ENABLED := disabled
