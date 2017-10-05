@@ -3988,6 +3988,12 @@ public final class Settings {
                 "lockscreen_quick_unlock_control";
 
         /**
+         * Disable dashboard suggestions in settings
+         * @hide
+         */
+        public static final String ENABLE_SUGGESTIONS = "enable_suggestions";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
