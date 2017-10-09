@@ -9376,6 +9376,13 @@ public final class Settings {
         public static final Validator STATUS_BAR_BATTERY_STYLE_VALIDATOR =
                 new SettingsValidators.InclusiveIntegerRangeValidator(0, 4);
 
+	/*
+         * Hide lockscreen shortcuts on secure lock screens
+         *
+         * @hide
+         */
+        public static final String HIDE_LOCK_SHORTCUTS = "hide_lock_shortcuts";
+
         /**
          * This are the settings to be backed up.
          *
