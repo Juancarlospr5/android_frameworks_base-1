@@ -22,12 +22,17 @@ import static com.android.systemui.statusbar.phone.StatusBar.reinflateSignalClus
 import android.annotation.Nullable;
 import android.app.Fragment;
 import android.app.StatusBarManager;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
+import android.util.Slog;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.Interpolators;
@@ -60,9 +65,31 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private StatusBar mStatusBarComponent;
     private DarkIconManager mDarkIconManager;
     private SignalClusterView mSignalClusterView;
+    private View mArsenicLogo;
     private LinearLayout mCenterClockLayout;
+    private boolean mShowLogo;
     private View mLeftClock;
     private int mClockStyle;
+
+    private final Handler mHandler = new Handler();
+
+    private class ArsenicSettingsObserver extends ContentObserver {
+        ArsenicSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_LOGO),
+                    false, this, UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings(true);
+        }
+    }
+    private ArsenicSettingsObserver mArsenicSettingsObserver = new ArsenicSettingsObserver(mHandler);
 
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
@@ -77,6 +104,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mKeyguardMonitor = Dependency.get(KeyguardMonitor.class);
         mNetworkController = Dependency.get(NetworkController.class);
         mStatusBarComponent = SysUiServiceProvider.getComponent(getContext(), StatusBar.class);
+	mArsenicSettingsObserver.observe();
     }
 
     @Override
@@ -99,6 +127,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mCenterClockLayout = (LinearLayout) mStatusBar.findViewById(R.id.center_clock_layout);
         mLeftClock = mStatusBar.findViewById(R.id.left_clock);
         Dependency.get(DarkIconDispatcher.class).addDarkReceiver(mSignalClusterView);
+	mArsenicLogo = mStatusBar.findViewById(R.id.status_bar_logo);
+	updateSettings(false);
         // Default to showing until we know otherwise.
         showSystemIconArea(false);
         initEmergencyCryptkeeperText();
@@ -199,7 +229,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void hideSystemIconArea(boolean animate) {
-        animateHide(mSystemIconArea, animate);
+        animateHide(mSystemIconArea, animate, true);
         animateHide(mCenterClockLayout, animate, true);
     }
 
@@ -209,13 +239,19 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void hideNotificationIconArea(boolean animate) {
-        animateHide(mNotificationIconAreaInner, animate);
-	animateHide(mCenterClockLayout, animate, true);
+        animateHide(mNotificationIconAreaInner, animate, true);
+		if (mShowLogo) {
+			animateHide(mArsenicLogo, animate, true);
+			animateHide(mCenterClockLayout, animate, true);
+		}
     }
 
     public void showNotificationIconArea(boolean animate) {
         animateShow(mNotificationIconAreaInner, animate);
-	animateShow(mCenterClockLayout, animate);
+		if (mShowLogo) {
+			animateShow(mArsenicLogo, animate);
+			animateShow(mCenterClockLayout, animate);
+		}
     }
 
     public void hideLeftClock(boolean animate) {
@@ -231,11 +267,11 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     /**
      * Hides a view.
      */
-    private void animateHide(final View v, boolean animate) {
+    private void animateHide(final View v, boolean animate, final boolean invisible) {
         v.animate().cancel();
         if (!animate) {
             v.setAlpha(0f);
-            v.setVisibility(View.INVISIBLE);
+            v.setVisibility(invisible ? View.INVISIBLE : View.GONE);
             return;
         }
         v.animate()
@@ -243,7 +279,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                 .setDuration(160)
                 .setStartDelay(0)
                 .setInterpolator(Interpolators.ALPHA_OUT)
-                .withEndAction(() -> v.setVisibility(View.INVISIBLE));
+                .withEndAction(() -> v.setVisibility(invisible ? View.INVISIBLE : View.GONE));
     }
 
     /**
@@ -289,6 +325,26 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             parent.removeView(emergencyViewStub);
         }
     }
+
+	public void updateSettings(boolean animate) {
+        try {
+            mShowLogo = Settings.System.getIntForUser(
+                getContext().getContentResolver(), Settings.System.STATUS_BAR_LOGO, 0,
+                UserHandle.USER_CURRENT) == 1;
+            if (mNotificationIconAreaInner != null) {
+                if (mShowLogo) {
+                    if (mNotificationIconAreaInner.getVisibility() == View.VISIBLE) {
+                        animateShow(mArsenicLogo, animate);
+                    }
+                } else {
+                    animateHide(mArsenicLogo, animate, false);
+                }
+            }
+        } catch (Exception e) {    
+            // never ever crash here
+            Slog.e(TAG, "updateSettings(animate)", e);
+        }
+        }
 
     public void updateSettings(boolean animate) {
         mClockStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
