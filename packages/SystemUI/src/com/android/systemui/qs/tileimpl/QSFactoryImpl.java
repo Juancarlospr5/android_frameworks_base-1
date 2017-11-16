@@ -48,6 +48,7 @@ import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.NightDisplayTile;
 import com.android.systemui.qs.tiles.ReadingModeTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
+import com.android.systemui.qs.tiles.ScreenshotTile;
 import com.android.systemui.qs.tiles.SoundTile;
 import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
@@ -139,6 +140,8 @@ public class QSFactoryImpl implements QSFactory {
                 return new AODTile(mHost);
             case "navbar":
                 return new NavBarTile(mHost);
+            case "screenshot":
+                return new ScreenshotTile(mHost);
         }
 
         // Intent tiles.
