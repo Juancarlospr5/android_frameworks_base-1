@@ -4089,6 +4089,15 @@ public final class Settings {
         public static final String BATTERY_SAVER_MODE_COLOR = "battery_save_mode_color";
 
         /**
+	 * SystemUI theme
+         * 0 - wallpaper based
+         * 1 - force light
+         * 2 - force dark
+         * @hide
+         */
+        public static final String SYSTEM_UI_THEME = "system_ui_theme";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
