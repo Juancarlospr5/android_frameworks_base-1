@@ -17,6 +17,8 @@
 package com.android.keyguard;
 
 import android.content.Context;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,8 +124,8 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
                         null, mEcaView, null
                 }};
 
-        boolean scramblePin = (LineageSettings.System.getInt(getContext().getContentResolver(),
-                LineageSettings.System.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT, 0) == 1);
+        boolean scramblePin = (LineageSettings.System.getIntForUser(getContext().getContentResolver(),
+                LineageSettings.System.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT, 0, UserHandle.USER_CURRENT) == 1);
 
         if (scramblePin) {
             Collections.shuffle(sNumbers);
@@ -149,8 +151,8 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
             }
         }
 
-        boolean quickUnlock = (Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
+        boolean quickUnlock = (Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0, UserHandle.USER_CURRENT) == 1);
 
         if (quickUnlock) {
             mPasswordEntry.setQuickUnlockListener(new QuickUnlockListener() {
