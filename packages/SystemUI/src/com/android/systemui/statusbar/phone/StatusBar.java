@@ -4986,29 +4986,18 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected void updateTheme() {
         final boolean inflated = mStackScroller != null;
 
-        // 0 = auto, 1 = time-based, 2 = light, 3 = dark
-        final int globalStyleSetting = LineageSettings.System.getInt(mContext.getContentResolver(),
-                LineageSettings.System.BERRY_GLOBAL_STYLE, 0);
-        WallpaperColors systemColors = mColorExtractor
-                .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-        final boolean useDarkTheme;
-
-        switch (globalStyleSetting) {
-            case 1:
-                useDarkTheme = isLiveDisplayNightModeOn();
-                break;
-            case 2:
-                useDarkTheme = false;
-                break;
-            case 3:
-                useDarkTheme = true;
-                break;
-            default:
-                useDarkTheme = systemColors != null && (systemColors.getColorHints() &
-                        WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
-                break;
+        int userThemeSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SYSTEM_THEME_STYLE, 0, mCurrentUserId);
+        boolean useDarkTheme = false;
+        if (userThemeSetting == 0) {
+            // The system wallpaper defines if QS should be light or dark.
+            WallpaperColors systemColors = mColorExtractor
+                    .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+            useDarkTheme = systemColors != null
+                    && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
+        } else {
+            useDarkTheme = userThemeSetting == 2;
         }
-
         if (isUsingDarkTheme() != useDarkTheme) {
             try {
                 mOverlayManager.setEnabled("com.android.system.theme.dark",
@@ -6218,6 +6207,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_FOOTER_WARNINGS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SYSTEM_THEME_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -6228,6 +6220,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         public void update() {
             setBatterySaverWarning();
             setQsPanelOptions();
+            updateTheme();
         }
     }
 
