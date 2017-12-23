@@ -135,4 +135,10 @@
     <string name="qs_menu_item_rows_two">2</string>
     <string name="qs_menu_item_rows_three">3</string>
     <string name="qs_menu_item_rows_four">4</string>
+	
+    <!-- HW Keys Tile -->
+    <string name="accessibility_quick_settings_hwkeys_on">HW Keys</string>
+    <string name="accessibility_quick_settings_hwkeys_off">HW Keys</string>
+    <string name="quick_settings_hwkeys_label">HW Keys</string>
+
 </resources>

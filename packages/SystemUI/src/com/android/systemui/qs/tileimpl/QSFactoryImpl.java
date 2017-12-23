@@ -46,6 +46,7 @@ import com.android.systemui.qs.tiles.CalendarTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
+import com.android.systemui.qs.tiles.HWKeysTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LiveDisplayTile;
 import com.android.systemui.qs.tiles.LocationTile;
@@ -175,6 +176,8 @@ public class QSFactoryImpl implements QSFactory {
                 return new SleepScreenTile(mHost);
             case "suspend_action":
                 return new SuspendActionTile(mHost);
+            case "hwkeys":
+                return new HWKeysTile(mHost);
         }
 
         // Intent tiles.
