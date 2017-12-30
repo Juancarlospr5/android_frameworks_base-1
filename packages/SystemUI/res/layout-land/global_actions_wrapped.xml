@@ -9,11 +9,11 @@
     android:theme="@style/qs_theme"
     android:clipChildren="false">
 
-    <ScrollView
-        android:layout_width="@dimen/global_actions_panel_width"
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scrollbars="none"
-        android:layout_gravity="@integer/hardware_ui_align">
+        android:layout_gravity="top|right">
 
         <!-- Global actions is right-aligned to be physically near power button -->
         <LinearLayout
@@ -21,10 +21,10 @@
             android:layout_width="@dimen/global_actions_panel_width"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="12dp"
             android:translationZ="9dp" />
 
-    </ScrollView>
+    </HorizontalScrollView>
 
 </com.android.systemui.HardwareUiLayout>
