@@ -7321,6 +7321,15 @@ public final class Settings {
         public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
 
         /**
+         * 0 - Automatic (Wallpaper based)
+         * 1 - Light
+         * 2 - Dark
+         * 3 - Black
+         * @hide
+         */
+        public static final String DEVICE_THEME = "device_theme";
+
+        /**
          * This are the settings to be backed up.
          *
          * NOTE: Settings are backed up and restored in the order they appear
