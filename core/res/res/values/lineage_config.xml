@@ -77,11 +77,6 @@
         <item>com.snapchat.android</item>
     </string-array>
 
-    <!-- Edge gesture service -->
-    <java-symbol type="dimen" name="edge_gesture_trigger_distance" />
-    <java-symbol type="dimen" name="edge_gesture_perpendicular_distance" />
-    <java-symbol type="dimen" name="edge_gesture_trigger_thickness" />
-
     <!-- Whether notify fingerprint client of successful cancelled authentication
     <bool name="config_notifyClientOnFingerprintCancelSuccess">false</bool>  -->
 
