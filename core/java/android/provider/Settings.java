@@ -2130,7 +2130,7 @@ public final class Settings {
                                                     + cr.getPackageName() + " and user:"
                                                     + userHandle + " with index:" + index);
                                         }
-                                        if (mGenerationTracker != null) {
+                                        if (mGenerationTracker != null && !Settings.isInSystemServer()) {
                                             mGenerationTracker.destroy();
                                         }
                                         mGenerationTracker = new GenerationTracker(array, index,
@@ -2142,7 +2142,9 @@ public final class Settings {
                                                     GenerationTracker generationTracker =
                                                             mGenerationTracker;
                                                     mGenerationTracker = null;
-                                                    generationTracker.destroy();
+                                                    if(!Settings.isInSystemServer()){
+                                                       generationTracker.destroy();
+                                                    }
                                                     mValues.clear();
                                                 }
                                             }
@@ -2213,7 +2215,7 @@ public final class Settings {
 
         public void clearGenerationTrackerForTest() {
             synchronized (NameValueCache.this) {
-                if (mGenerationTracker != null) {
+                if (mGenerationTracker != null && !Settings.isInSystemServer()) {
                     mGenerationTracker.destroy();
                 }
                 mValues.clear();
