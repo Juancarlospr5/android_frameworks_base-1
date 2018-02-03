@@ -57,6 +57,10 @@
     <!-- mute -->
 
     <com.android.systemui.tuner.StatusBarSwitch
+        android:key="data_saver"
+        android:title="@string/status_bar_data_saver" />
+
+    <com.android.systemui.tuner.StatusBarSwitch
         android:key="volume"
         android:title="@*android:string/volume_unknown" />
 
