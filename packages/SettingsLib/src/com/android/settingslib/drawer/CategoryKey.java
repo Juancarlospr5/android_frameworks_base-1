@@ -46,6 +46,8 @@ public final class CategoryKey {
             "com.android.settings.category.ia.development";
     public static final String CATEGORY_NOTIFICATIONS =
             "com.android.settings.category.ia.notifications";
+    public static final String CATEGORY_ARSENIC =
+            "com.android.settings.category.ia.arsenic";
 
     public static final Map<String, String> KEY_COMPAT_MAP;
 
