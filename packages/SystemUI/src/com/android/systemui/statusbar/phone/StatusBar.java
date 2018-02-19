@@ -6586,6 +6586,12 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
+    public void updateQsbhClock() {
+        if (mQuickStatusBarHeader != null) {
+            mQuickStatusBarHeader.updateQsbhClock();
+        }
+    }
+
     private void updateTickerSettings() {
         mTickerEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.STATUS_BAR_SHOW_TICKER, 0,
