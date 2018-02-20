@@ -4041,6 +4041,11 @@ public final class Settings {
         public static final String OMNIJAWS_WEATHER_ICON_PACK = "omnijaws_weather_icon_pack";
 
         /**
+	 * Enable/Disable screenshot sound
+	 */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**"
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

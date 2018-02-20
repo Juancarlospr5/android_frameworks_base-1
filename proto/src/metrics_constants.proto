@@ -4573,6 +4573,6 @@ message MetricsEvent {
     // END OF AOSP CONSTANTS
 
     // Arsenic
-    ARSENIC = 420
+    ARSENIC = 420;
   }
 }

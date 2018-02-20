@@ -18,8 +18,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- Screen zoom level -->
+    <!-- Screen zoom level 
     <string name="screen_zoom_summary_smaller">Smaller</string>
-    <string name="screen_zoom_summary_smallest">Smallest</string>
+    <string name="screen_zoom_summary_smallest">Smallest</string>-->
 
 </resources>

@@ -392,7 +392,6 @@ public class LockPatternUtils {
      */
     public byte[] verifyPattern(List<LockPatternView.Cell> pattern, long challenge, int userId)
             throws RequestThrottledException {
-        throwIfCalledOnMainThread();
         return verifyCredential(patternToString(pattern, userId), CREDENTIAL_TYPE_PATTERN, challenge,
                 userId);
     }
@@ -417,7 +416,6 @@ public class LockPatternUtils {
     public boolean checkPattern(List<LockPatternView.Cell> pattern, int userId,
             @Nullable CheckCredentialProgressCallback progressCallback)
             throws RequestThrottledException {
-        throwIfCalledOnMainThread();
         return checkCredential(patternToString(pattern, userId), CREDENTIAL_TYPE_PATTERN, userId,
                 progressCallback);
     }
