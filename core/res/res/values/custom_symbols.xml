@@ -31,6 +31,9 @@
     <!-- Dash charging support -->
     <java-symbol type="bool" name="config_hasDashCharger" />
 
+    <!-- Whether device has turbo power charging support -->
+    <java-symbol type="bool" name="config_hasTurboPowerCharger" />
+
     <!-- Screenrecord -->
     <java-symbol type="bool" name="config_enableScreenrecordChord" />
 
@@ -42,8 +45,8 @@
 
     <!-- Enable sms authorization framework -->
     <java-symbol type="bool" name="config_sms_authorization_enabled" />
-	
-	<!-- Pocket Lock -->
+
+    <!-- Pocket Lock -->
     <java-symbol type="layout" name="pocket_lock_view_layout" />
     <java-symbol type="id" name="pocket_hint_container" />
     <java-symbol type="id" name="pocket_hint_image" />
