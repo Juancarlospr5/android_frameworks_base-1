@@ -60,6 +60,9 @@
     <!-- Dash charging support -->
     <bool name="config_hasDashCharger">false</bool>
 
+    <!-- Whether device has turbo power charging support -->
+    <bool name="config_hasTurboPowerCharger">false</bool>
+
     <!-- Screenrecord -->
     <bool name="config_enableScreenrecordChord">true</bool>
 
