@@ -21,7 +21,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 
-import com.android.internal.util.liquid.LiquidUtils;
+import com.android.internal.util.arsenic.ArsenicUtils;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -37,7 +37,7 @@ public class PictureInPictureTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.LIQUID;
+        return MetricsEvent.ARSENIC;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PictureInPictureTile extends QSTileImpl<BooleanState> {
     @Override
     public void handleClick() {
         mHost.collapsePanels();
-        LiquidUtils.sendKeycode(171);
+        ArsenicUtils.sendKeycode(171);
     }
 
     @Override

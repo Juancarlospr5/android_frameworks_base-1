@@ -249,6 +249,7 @@ import com.android.internal.policy.IKeyguardDismissCallback;
 import com.android.internal.policy.IShortcutService;
 import com.android.internal.policy.PhoneWindow;
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.util.arsenic.ArsenicUtils;
 import com.android.internal.util.ScreenShapeHelper;
 import com.android.internal.widget.PointerLocationView;
 import com.android.server.GestureLauncherService;
@@ -8994,13 +8995,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     public void sendCustomAction(Intent intent) {
         String action = intent.getAction();
         if (action != null) {
-            if (LiquidUtils.INTENT_SCREENSHOT.equals(action)) {
+            if (ArsenicUtils.INTENT_SCREENSHOT.equals(action)) {
                 mContext.enforceCallingOrSelfPermission(Manifest.permission.ACCESS_SURFACE_FLINGER,
                         TAG + "sendCustomAction permission denied");
                 mHandler.removeCallbacks(mScreenshotRunnable);
                 mScreenshotRunnable.setScreenshotType(TAKE_SCREENSHOT_FULLSCREEN);
                 mHandler.post(mScreenshotRunnable);
-            } else if (LiquidUtils.INTENT_REGION_SCREENSHOT.equals(action)) {
+            } else if (ArsenicUtils.INTENT_REGION_SCREENSHOT.equals(action)) {
                 mContext.enforceCallingOrSelfPermission(Manifest.permission.ACCESS_SURFACE_FLINGER,
                         TAG + "sendCustomAction permission denied");
                 mHandler.removeCallbacks(mScreenshotRunnable);
