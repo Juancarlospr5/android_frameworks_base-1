@@ -44,10 +44,7 @@ import android.app.KeyguardManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-<<<<<<< HEAD
 import android.content.ContentResolver;
-=======
->>>>>>> 0c88b0f... Add Screen Record to the Power Menu [1/2]
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -958,7 +955,6 @@ class GlobalActionsDialog implements DialogInterface.OnDismissListener, DialogIn
     }
 
     /**
-<<<<<<< HEAD
      * Functions needed for taking screenhots.
      * This leverages the built in screenshot functionality
      */
