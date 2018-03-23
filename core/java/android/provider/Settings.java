@@ -4112,6 +4112,11 @@ public final class Settings {
         public static final String FINGERPRINT_SUCCESS_VIB = "fingerprint_success_vib";
 
         /**
+         * @hide
+         */
+        public static final String SHOW_USB_MODE_DIALOG = "show_usb_mode_dialog";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
