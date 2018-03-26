@@ -78,7 +78,7 @@ public class WeatherTile extends QSTileImpl<BooleanState> implements OmniJawsCli
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.LIQUID;
+        return MetricsEvent.ARSENIC;
     }
 
     @Override
@@ -229,7 +229,7 @@ public class WeatherTile extends QSTileImpl<BooleanState> implements OmniJawsCli
 
         @Override
         public int getMetricsCategory() {
-            return MetricsEvent.LIQUID;
+            return MetricsEvent.ARSENIC;
         }
 
         @Override
