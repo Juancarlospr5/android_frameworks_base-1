@@ -168,6 +168,7 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.MessagingGroup;
 import com.android.internal.widget.MessagingMessage;
 import com.android.keyguard.KeyguardHostView.OnDismissAction;
+import com.android.keyguard.KeyguardShortcuts;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.keyguard.ViewMediatorCallback;
@@ -509,6 +510,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private int mNotificationStyle;
     private boolean mAmbientMediaPlaying;
+    KeyguardShortcuts mKeyguardShortcuts;
 
     /**
      * Helper that is responsible for showing the right toast when a disallowed activity operation
@@ -977,6 +979,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         mAboveShelfObserver.setListener(mStatusBarWindow.findViewById(
                 R.id.notification_container_parent));
         mKeyguardStatusBar = mStatusBarWindow.findViewById(R.id.keyguard_header);
+        mKeyguardShortcuts = (KeyguardShortcuts) mStatusBarWindow.findViewById(R.id.shortcuts);
 
         mNotificationIconAreaController = SystemUIFactory.getInstance()
                 .createNotificationIconAreaController(context, this);
@@ -4744,6 +4747,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         mNotificationPanel.setDozing(mDozing, animate);
         mVisualizerView.setDozing(mDozing);
         updateQsExpansionEnabled();
+        mKeyguardShortcuts.setDozing(mDozing);
         Trace.endSection();
     }
 
