@@ -728,25 +728,6 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     };
 
-    public void setMediaPlaying() {
-        if (mNavigationBar != null) {
-            if (PlaybackState.STATE_PLAYING ==
-                    getMediaControllerPlaybackState(mMediaController)
-                    || PlaybackState.STATE_BUFFERING ==
-                    getMediaControllerPlaybackState(mMediaController)) {
-                final String currentPkg = mMediaController.getPackageName().toLowerCase();
-                for (String packageName : mNavMediaArrowsExcludeList) {
-                    if (currentPkg.contains(packageName)) {
-                        return;
-                    }
-                }
-                mNavigationBar.setMediaPlaying(true);
-            } else {
-                mNavigationBar.setMediaPlaying(false);
-            }
-        }
-    }
-
     private void tickTrackInfo() {
         ArrayList<Entry> activeNotifications = mNotificationData.getActiveNotifications();
         int N = activeNotifications.size();
@@ -765,7 +746,6 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
->>>>>>> 3dd8584... Statusbar ticker refactoring
     private final OnChildLocationsChangedListener mOnChildLocationsChangedListener =
             new OnChildLocationsChangedListener() {
         @Override
