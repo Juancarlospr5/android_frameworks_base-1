@@ -66,7 +66,7 @@ public class CPUInfoTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.ARSENIC;
+        return MetricsEvent.LIQUID;
     }
 
     @Override
