@@ -660,6 +660,7 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
     private BatteryController mBatteryController;
     protected boolean mPanelExpanded;
     private IOverlayManager mOverlayManager;
+    private int mCurrentTheme;
     private boolean mKeyguardRequested;
     private boolean mIsKeyguard;
     private LogMaker mStatusBarStateLog;
@@ -899,6 +900,7 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         final Context context = mContext;
         updateDisplaySize(); // populates mDisplayMetrics
         updateResources();
+        getCurrentThemeSetting();
         updateTheme();
 
         inflateStatusBarWindow(context);
@@ -4194,6 +4196,11 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         Trace.endSection();
     }
 
+    private void getCurrentThemeSetting() {
+        mCurrentTheme = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SYSTEM_UI_THEME, 0, mLockscreenUserManager.getCurrentUserId());
+    }
+
     /**
      * Switches theme from light to dark and vice-versa.
      */
@@ -4203,11 +4210,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         // 0 = auto, 1 = time-based, 2 = light, 3 = dark
         final int globalStyleSetting = LineageSettings.System.getInt(mContext.getContentResolver(),
                 LineageSettings.System.BERRY_GLOBAL_STYLE, 0);
-        int userThemeSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.SYSTEM_UI_THEME, 0, mLockscreenUserManager.getCurrentUserId());
         boolean useBlackTheme = false;
         boolean useDarkTheme = false;
-        if (userThemeSetting == 0) {
+        if (mCurrentTheme == 0) {
             // The system wallpaper defines if QS should be light or dark.
             WallpaperColors systemColors = mColorExtractor
                     .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
@@ -4217,8 +4222,8 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             // with white on white or black on black
             unfuckBlackWhiteAccent();
         } else {
-            useBlackTheme = userThemeSetting == 3;
-            useDarkTheme = userThemeSetting == 2;
+            useBlackTheme = mCurrentTheme == 3;
+            useDarkTheme = mCurrentTheme == 2;
             // Check for black and white accent so we don't end up
             // with white on white or black on black
             unfuckBlackWhiteAccent();
@@ -4998,6 +5003,10 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_LANDSCAPE))) {
                 setQsRowsColumns();            
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.SYSTEM_UI_THEME))) {
+                getCurrentThemeSetting();
+                updateTheme();
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.ACCENT_PICKER))) {
                 // Unload the accents and update the accent only when the user asks.
