@@ -2673,10 +2673,6 @@ public class NotificationPanelView extends PanelView implements
         mKeyguardStatusView.setPulsing(pulsing);
     }
 
-    public void setForcedMediaPulse(int reason) {
-        mKeyguardStatusView.setForcedMediaPulse(reason);
-    }
-
     public void setAmbientIndicationBottomPadding(int ambientIndicationBottomPadding) {
         if (mAmbientIndicationBottomPadding != ambientIndicationBottomPadding) {
             mAmbientIndicationBottomPadding = ambientIndicationBottomPadding;
