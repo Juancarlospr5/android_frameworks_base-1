@@ -74,7 +74,6 @@
     <!-- Screenrecord QS Tile -->
     <string name="quick_settings_screenrecord">Screenrecord</string>
 
-<<<<<<< HEAD
     <!-- Weather QS Tile -->
     <string name="omnijaws_service_error">Error</string>
     <string name="omnijaws_service_unkown">No weather data</string>
