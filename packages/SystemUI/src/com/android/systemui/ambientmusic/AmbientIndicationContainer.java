@@ -2,7 +2,6 @@ package com.android.systemui.ambientmusic;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.media.MediaMetadata;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -24,7 +23,6 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
     private StatusBar mStatusBar;
     private TextView mText;
     private Context mContext;
-    private MediaMetadata mMediaMetaData;
 
     public AmbientIndicationContainer(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -44,37 +42,23 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
         mAmbientIndication = findViewById(R.id.ambient_indication);
         mText = (TextView)findViewById(R.id.ambient_indication_text);
         mIcon = (ImageView)findViewById(R.id.ambient_indication_icon);
-        setIndication(mMediaMetaData);
+        setIndication(mIndication);
     }
 
     @Override
     public void setDozing(boolean dozing) {
         mDozing = dozing;
-        setVisibility(dozing ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public void setIndication(MediaMetadata mediaMetaData) {
-        CharSequence charSequence = null;
-        if (mediaMetaData != null) {
-            CharSequence artist = mediaMetaData.getText(MediaMetadata.METADATA_KEY_ARTIST);
-            CharSequence album = mediaMetaData.getText(MediaMetadata.METADATA_KEY_ALBUM);
-            CharSequence title = mediaMetaData.getText(MediaMetadata.METADATA_KEY_TITLE);
-            if (artist != null && album != null && title != null) {
-                /* considering we are in Ambient mode here, it's not worth it to show
-                    too many infos, so let's skip album name to keep a smaller text */
-                charSequence = artist.toString() /*+ " - " + album.toString()*/ + " - " + title.toString();
-            }
-        }
+    public void setIndication(CharSequence charSequence) {
         mText.setText(charSequence);
-        mMediaMetaData = mediaMetaData;
-        boolean infoAvaillable = TextUtils.isEmpty(charSequence);
+        mIndication = charSequence;
+        mAmbientIndication.setClickable(false);
+        boolean infoAvaillable = TextUtils.isEmpty((CharSequence)charSequence);
         if (infoAvaillable) {
             mAmbientIndication.setVisibility(View.INVISIBLE);
         } else {
             mAmbientIndication.setVisibility(View.VISIBLE);
-        }
-        if (mStatusBar != null) {
-            mStatusBar.triggerAmbientForMedia();
         }
     }
 }
