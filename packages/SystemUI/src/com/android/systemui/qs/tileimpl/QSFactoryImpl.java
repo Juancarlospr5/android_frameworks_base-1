@@ -44,7 +44,6 @@ import com.android.systemui.qs.tiles.GoogleNowTile;
 import com.android.systemui.qs.tiles.GoogleVoiceAssistTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
-import com.android.systemui.qs.tiles.HWKeysTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LiveDisplayTile;
 import com.android.systemui.qs.tiles.LocationTile;
@@ -111,7 +110,6 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("screenshot")) return new ScreenshotTile(mHost);
         else if (tileSpec.equals("screenrecord")) return new ScreenrecordTile(mHost);
         else if (tileSpec.equals("sound")) return new SoundTile(mHost);
-        else if (tileSpec.equals("hwkeys")) return  new HWKeysTile(mHost);
         else if (tileSpec.equals("expanded_desktop")) return new ExpandedDesktopTile(mHost);
         else if (tileSpec.equals("weather")) return new WeatherTile(mHost);
         else if (tileSpec.equals("cpuinfo")) return new CPUInfoTile(mHost);
