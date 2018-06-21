@@ -3083,14 +3083,14 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     // Check for the dark system theme
     public boolean isUsingDarkTheme() {
-        OverlayInfo systemuiThemeInfo = null;
+        OverlayInfo themeInfo = null;
         try {
             themeInfo = mOverlayManager.getOverlayInfo("com.android.system.theme.dark",
                     mCurrentUserId);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        return systemuiThemeInfo != null && systemuiThemeInfo.isEnabled();
+        return themeInfo != null && themeInfo.isEnabled();
     }
 
     private boolean isLiveDisplayNightModeOn() {
@@ -6537,7 +6537,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     };
 
-    private ArsenicSettingsObserver mLArsenicSettingsObserver = new ArsenicSettingsObserver(mHandler);
+    private ArsenicSettingsObserver mArsenicSettingsObserver = new ArsenicSettingsObserver(mHandler);
     private class ArsenicSettingsObserver extends ContentObserver {
         ArsenicSettingsObserver(Handler handler) {
             super(handler);

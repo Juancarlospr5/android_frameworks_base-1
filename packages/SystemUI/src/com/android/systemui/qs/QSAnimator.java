@@ -236,7 +236,7 @@ public class QSAnimator implements Callback, PageListener, Listener, OnLayoutCha
         View brightness = mQsPanel.getBrightnessView();
 
             // Make brightness appear static position and alpha in through second half.
-            View brightness = mQsPanel.getBrightnessView();
+            //View brightness = mQsPanel.getBrightnessView();
             if (brightness != null) {
                 firstPageBuilder.addFloat(brightness, "translationY", heightDiff, 0);
                 mBrightnessAnimator = new TouchAnimator.Builder()

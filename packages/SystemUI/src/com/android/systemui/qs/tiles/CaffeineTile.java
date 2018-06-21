@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.service.quicksettings.Tile;
 
 import com.android.systemui.qs.QSHost;
@@ -141,6 +142,7 @@ public class CaffeineTile extends QSTileImpl<BooleanState> {
             mContext.stopService(service);
         }
         return enabled;
+    }
 
     @Override
     public CharSequence getTileLabel() {

@@ -20,6 +20,8 @@ import android.app.ActivityThread;
 import android.app.StatusBarManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Binder;
 import android.os.Bundle;
@@ -405,6 +407,17 @@ public class StatusBarManagerService extends IStatusBarService.Stub {
         }
     }
 
+    @Override
+    public void startAssist(Bundle args) {
+        enforceStatusBarService();
+
+        if (mBar != null) {
+            try {
+                mBar.startAssist(args);
+            } catch (RemoteException e) {
+            }
+        }
+    }
     public void addTile(ComponentName component) {
         enforceStatusBarOrShell();
 

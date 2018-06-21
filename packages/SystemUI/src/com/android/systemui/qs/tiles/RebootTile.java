@@ -64,10 +64,7 @@ public class RebootTile extends QSTileImpl<BooleanState> {
         handler.postDelayed(new Runnable() {
             public void run() {
                 try {
-                    if(mRebootToRecovery)
-                        mBarService.advancedReboot(PowerManager.REBOOT_RECOVERY);
-                    else
-                        mBarService.reboot(false);
+                    mBarService.reboot(false, mRebootToRecovery ? PowerManager.REBOOT_RECOVERY : "");
                 } catch (RemoteException e) {
                 }
             }

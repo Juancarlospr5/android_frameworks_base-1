@@ -17,6 +17,7 @@
 package com.android.internal.statusbar;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
@@ -82,4 +83,5 @@ interface IStatusBarService
      * Arsenic
      */
     void toggleCameraFlash();
+    void startAssist(in Bundle args);
 }
