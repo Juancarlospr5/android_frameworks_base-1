@@ -10510,6 +10510,12 @@ public final class Settings {
         public static final String DOT_COLOR_SWITCH = "dot_color_switch";
 
         /**
+         * Ambient Display Visualizer
+         * @hide
+         */
+        public static final String AMBIENT_VISUALIZER_ENABLED = "ambient_visualizer";
+
+        /**
          * This are the settings to be backed up.
          *
          * NOTE: Settings are backed up and restored in the order they appear

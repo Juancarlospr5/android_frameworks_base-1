@@ -624,6 +624,9 @@ public class StatusBar extends SystemUI implements DemoMode,
     private boolean mKeyguardShowingMedia;
     private boolean mShowMediaMetadata;
 
+    // LS visualizer on Ambient Display
+    private boolean mAmbientVisualizer;
+
     private BroadcastReceiver mWallpaperChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -5483,6 +5486,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.SYSUI_ROUNDED_FWVALS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.Secure.AMBIENT_VISUALIZER_ENABLED),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5561,6 +5567,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             } else if (uri.equals(Settings.Secure.getUriFor(
                     Settings.Secure.SYSUI_ROUNDED_FWVALS))) {
                 updateCorners();
+            } else if (uri.equals(Settings.Secure.getUriFor(
+                    Settings.Secure.AMBIENT_VISUALIZER_ENABLED))) {
+                setAmbientVis();
             }
         }
 
@@ -5666,6 +5675,12 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private boolean isAmbientContainerAvailable() {
         return mAmbientMediaPlaying && mAmbientIndicationContainer != null;
+    }
+
+    private void setAmbientVis() {
+        mAmbientVisualizer = Settings.Secure.getIntForUser(
+                mContext.getContentResolver(), Settings.Secure.AMBIENT_VISUALIZER_ENABLED, 0,
+                UserHandle.USER_CURRENT) == 1;
     }
 
     public int getWakefulnessState() {
@@ -5832,6 +5847,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             mEntryManager.updateNotifications();
             updateDozingState();
             updateReportRejectedTouchVisibility();
+            if (mAmbientVisualizer && mDozing) {
+                mVisualizerView.setVisible(true);
+            }
         }
         Trace.endSection();
     }
