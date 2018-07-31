@@ -61,14 +61,20 @@ public class SyncTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        state.value = ContentResolver.getMasterSyncAutomatically();
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
+	state.value = ContentResolver.getMasterSyncAutomatically();
         state.label = mContext.getString(R.string.quick_settings_sync_label);
         state.icon = mIcon;
-        if (state.value) {
+        state.slash.isSlashed = !state.value;
+	if (state.value) {
+            /*state.icon = ResourceIcon.get(R.drawable.ic_qs_sync_on);*/
             state.contentDescription =  mContext.getString(
                     R.string.accessibility_quick_settings_sync_on);
             state.state = Tile.STATE_ACTIVE;
         } else {
+            /*state.icon = ResourceIcon.get(R.drawable.ic_qs_sync_off);*/
             state.contentDescription =  mContext.getString(
                     R.string.accessibility_quick_settings_sync_off);
             state.state = Tile.STATE_INACTIVE;
