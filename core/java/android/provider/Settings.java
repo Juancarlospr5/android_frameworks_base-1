@@ -4682,6 +4682,11 @@ public final class Settings {
                 ANY_INTEGER_VALIDATOR;
 
         /**
+         * @hide
+         */
+        public static final String USE_BOTTOM_GESTURE_NAVIGATION = "use_bottom_gesture_navigation";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -4758,11 +4763,6 @@ public final class Settings {
          */
         public static final String[] LEGACY_RESTORE_SETTINGS = {
         };
-
-        /**
-         * @hide
-         */
-        public static final String USE_BOTTOM_GESTURE_NAVIGATION = "use_bottom_gesture_navigation";
 
         /**
          * These are all public system settings
