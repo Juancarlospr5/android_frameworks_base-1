@@ -249,4 +249,8 @@
   <java-symbol type="drawable" name="ic_shortcut_action_search" />
 
   <java-symbol type="integer" name="config_flashlightProximityTimeout" />
+
+  <!-- Alternative keyhandler -->
+  <java-symbol type="string" name="config_alternativeDeviceKeyHandlerLib" />
+  <java-symbol type="string" name="config_alternativeDeviceKeyHandlerClass" />
 </resources>
