@@ -29,6 +29,12 @@
   <!-- Emergency button in power menu -->
   <java-symbol type="bool" name="config_showEmergencyButtonInPowerMenu" />
 
+  <!-- Pocket Lock --> 
+  <java-symbol type="layout" name="pocket_lock_view_layout" /> 
+  <java-symbol type="id" name="pocket_hint_container" /> 
+  <java-symbol type="id" name="pocket_hint_image" /> 
+  <java-symbol type="id" name="pocket_hint_message" />
+
   <!-- Full screen aspect ratio -->
   <java-symbol type="bool" name="config_haveHigherAspectRatioScreen" />
   <java-symbol type="dimen" name="config_screenAspectRatio" />
