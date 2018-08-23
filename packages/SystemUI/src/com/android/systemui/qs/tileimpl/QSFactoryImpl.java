@@ -38,6 +38,7 @@ import com.android.systemui.qs.tiles.CameraTile;
 import com.android.systemui.qs.tiles.ColorInversionTile;
 import com.android.systemui.qs.tiles.DataSaverTile;
 import com.android.systemui.qs.tiles.DndTile;
+import com.android.systemui.qs.tiles.AlarmTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
@@ -154,6 +155,8 @@ public class QSFactoryImpl implements QSFactory {
                 return new RebootTile(mHost);
             case "camera":
                 return new CameraTile(mHost);
+            case "alarm":
+                return new AlarmTile(mHost);
         }
 
         // Intent tiles.
