@@ -60,6 +60,9 @@
     <!-- Shows when people have clicked on the custom lockscreen shortcut [CHAR LIMIT=60] -->
     <string name="custom_hint">Swipe from icon to launch</string>
 
+    <!-- Camera tile -->
+    <string name="camera_title_tile">Camera</string>
+
     <!-- Navigation Bar tile -->
     <string name="quick_settings_navbar_title">Navigation Bar</string>
     <string name="accessibility_quick_settings_navbar_off">Sync off</string>
