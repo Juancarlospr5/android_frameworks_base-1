@@ -35,6 +35,7 @@ import com.android.systemui.qs.tiles.CastTile;
 import com.android.systemui.qs.tiles.CellularTile;
 import com.android.systemui.qs.tiles.CPUInfoTile;
 import com.android.systemui.qs.tiles.CameraTile;
+import com.android.systemui.qs.tiles.SuspendActionTile;
 import com.android.systemui.qs.tiles.ColorInversionTile;
 import com.android.systemui.qs.tiles.CompassTile;
 import com.android.systemui.qs.tiles.DataSaverTile;
@@ -172,6 +173,8 @@ public class QSFactoryImpl implements QSFactory {
                 return new CompassTile(mHost);
             case "sleepscreen":
                 return new SleepScreenTile(mHost);
+            case "suspend_action":
+                return new SuspendActionTile(mHost);
         }
 
         // Intent tiles.
