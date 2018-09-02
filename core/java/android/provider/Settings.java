@@ -4706,6 +4706,68 @@ public final class Settings {
         public static final String USE_BOTTOM_GESTURE_NAVIGATION = "use_bottom_gesture_navigation";
 
         /**
+         * Whether to display the reboot option in the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_REBOOT = "powermenu_reboot";
+
+        /**
+         * Whether to display the power menu advanced reboot option on a secured lockscreen
+         *
+         * @hide
+         */
+        public static final String POWERMENU_LS_ADVANCED_REBOOT = "powermenu_ls_advanced_reboot";
+
+        /**
+         * Whether to display the power menu screenshot option on a secured lockscreen
+         *
+         * @hide
+         */
+        public static final String POWERMENU_LS_SCREENSHOT = "powermenu_ls_screenshot";
+
+        /**
+         * Whether to display the power menu airplane mode option on a secured lockscreen
+         *
+         * @hide
+         */
+        public static final String POWERMENU_LS_AIRPLANE = "powermenu_ls_airplane";
+
+        /**
+         * Whether to display the power menu reboot option on a secured lockscreen
+         *
+         * @hide
+         */
+        public static final String POWERMENU_LS_REBOOT = "powermenu_ls_reboot";
+
+        /**
+         * Whether to display the advanced reboot option on the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_ADVANCED_REBOOT = "powermenu_advanced_reboot";
+
+        /**
+         * Whether to display the screenshot option on the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_SCREENSHOT = "powermenu_screenshot";
+
+        /**
+         * Whether to display the airplane option on the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_AIRPLANE = "powermenu_airplane";
+
+         /**
+         * Whether to display the power menu dialog while on the lockscreen
+         * @hide
+         */
+        public static final String POWERMENU_LOCKSCREEN = "powermenu_lockscreen";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -7750,15 +7812,6 @@ public final class Settings {
         private static final Validator WAKE_GESTURE_ENABLED_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
-         * Disable power menu on secure lock screens
-         *
-         * @hide
-         */
-        public static final String LOCK_POWER_MENU_DISABLED = "lockscreen_power_menu_disabled";
-
-        private static final Validator LOCK_POWER_MENU_DISABLED_VALIDATOR = BOOLEAN_VALIDATOR;
-
-        /**
          * Whether the device should doze if configured.
          * @hide
          */
@@ -8915,7 +8968,6 @@ public final class Settings {
                     ENABLED_NOTIFICATION_POLICY_ACCESS_PACKAGES_VALIDATOR); //legacy restore setting
             VALIDATORS.put(HUSH_GESTURE_USED, HUSH_GESTURE_USED_VALIDATOR);
             VALIDATORS.put(MANUAL_RINGER_TOGGLE_COUNT, MANUAL_RINGER_TOGGLE_COUNT_VALIDATOR);
-            VALIDATORS.put(LOCK_POWER_MENU_DISABLED, LOCK_POWER_MENU_DISABLED_VALIDATOR);
             VALIDATORS.put(STATUS_BAR_BATTERY_STYLE, STATUS_BAR_BATTERY_STYLE_VALIDATOR);
         }
 

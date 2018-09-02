@@ -167,6 +167,7 @@ import android.app.ActivityThread;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.IUiModeManager;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -911,8 +912,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // Maps global key codes to the components that will handle them.
     private GlobalKeyManager mGlobalKeyManager;
 
-    private boolean mGlobalActionsOnLockDisable;
-
     private boolean mUseGestureButton;
     private GestureButton mGestureButton;
     private boolean mGestureButtonRegistered;
@@ -1258,9 +1257,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(LineageSettings.Secure.getUriFor(
                     LineageSettings.Secure.KILL_APP_LONGPRESS_BACK), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.LOCK_POWER_MENU_DISABLED), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.USE_BOTTOM_GESTURE_NAVIGATION), false, this,
@@ -1914,14 +1910,22 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     private void powerLongPress() {
-        final int behavior = mResolvedLongPressOnPowerBehavior;
+        int behavior = mResolvedLongPressOnPowerBehavior;
         switch (behavior) {
         case LONG_PRESS_POWER_NOTHING:
             break;
         case LONG_PRESS_POWER_GLOBAL_ACTIONS:
             mPowerKeyHandled = true;
-            performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, false);
-            showGlobalActionsInternal();
+            KeyguardManager km = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
+            boolean locked = km.inKeyguardRestrictedInputMode();
+            boolean globalActionsOnLockScreen = Settings.System.getInt(
+                    mContext.getContentResolver(), Settings.System.POWERMENU_LOCKSCREEN, 1) == 1;
+            if (locked && !globalActionsOnLockScreen) {
+                behavior = LONG_PRESS_POWER_NOTHING;
+            } else {
+                performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, false);
+                showGlobalActionsInternal();
+            }
             break;
         case LONG_PRESS_POWER_SHUT_OFF:
         case LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM:
@@ -2214,14 +2218,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     void showGlobalActionsInternal() {
-        final boolean keyguardShowing = isKeyguardShowingAndNotOccluded();
-        if (keyguardShowing && isKeyguardSecure(mCurrentUserId) &&
-                mGlobalActionsOnLockDisable) {
-            return;
-        }
         if (mGlobalActions == null) {
             mGlobalActions = new GlobalActions(mContext, mWindowManagerFuncs);
         }
+        final boolean keyguardShowing = isKeyguardShowingAndNotOccluded();
         mGlobalActions.showDialog(keyguardShowing, isDeviceProvisioned());
         if (keyguardShowing) {
             // since it took two seconds of long press to bring this up,
@@ -3305,9 +3305,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             if (mImmersiveModeConfirmation != null) {
                 mImmersiveModeConfirmation.loadSetting(mCurrentUserId);
             }
-            mGlobalActionsOnLockDisable = Settings.Secure.getIntForUser(resolver,
-                    Settings.Secure.LOCK_POWER_MENU_DISABLED, 1,
-                    UserHandle.USER_CURRENT) != 0;
 
             mUseGestureButton = Settings.System.getIntForUser(resolver,
                     Settings.System.USE_BOTTOM_GESTURE_NAVIGATION, 0,
