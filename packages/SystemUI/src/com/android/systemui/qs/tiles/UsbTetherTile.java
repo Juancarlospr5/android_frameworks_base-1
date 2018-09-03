@@ -27,33 +27,43 @@ import android.provider.Settings;
 import android.net.ConnectivityManager;
 import android.service.quicksettings.Tile;
 
+import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.Dependency;
 import com.android.systemui.R;
 
 import org.lineageos.internal.logging.LineageMetricsLogger;
+
+import com.android.systemui.R.drawable;
+import com.android.systemui.plugins.ActivityStarter;
+import com.android.systemui.statusbar.policy.KeyguardMonitor;
 
 /**
  * USB Tether quick settings tile
  */
 public class UsbTetherTile extends QSTileImpl<BooleanState> {
 
-    private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_usb_tether);
-
-    private static final Intent TETHER_SETTINGS = new Intent().setComponent(new ComponentName(
-            "com.android.settings", "com.android.settings.TetherSettings"));
+    static final Intent TETHER_SETTINGS = new Intent().setComponent(new ComponentName(
+             "com.android.settings", "com.android.settings.TetherSettings"));
 
     private final ConnectivityManager mConnectivityManager;
 
     private boolean mListening;
 
+    private final KeyguardMonitor mKeyguard;
+    private final KeyguardCallback mKeyguardCallback = new KeyguardCallback();
+
     private boolean mUsbConnected = false;
     private boolean mUsbTetherEnabled = false;
+
+    private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_usb_tether);
 
     public UsbTetherTile(QSHost host) {
         super(host);
         mConnectivityManager = mContext.getSystemService(ConnectivityManager.class);
+        mKeyguard = Dependency.get(KeyguardMonitor.class);
     }
 
     public BooleanState newTileState() {
@@ -70,14 +80,23 @@ public class UsbTetherTile extends QSTileImpl<BooleanState> {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(UsbManager.ACTION_USB_STATE);
             mContext.registerReceiver(mReceiver, filter);
+            mKeyguard.addCallback(mKeyguardCallback);
         } else {
             mContext.unregisterReceiver(mReceiver);
+            mKeyguard.removeCallback(mKeyguardCallback);
         }
     }
 
     @Override
     protected void handleClick() {
         if (mUsbConnected) {
+            if (mKeyguard.isSecure() && mKeyguard.isShowing()) {
+                Dependency.get(ActivityStarter.class).postQSRunnableDismissingKeyguard(() -> {
+                    mHost.openPanels();
+                    mConnectivityManager.setUsbTethering(!mUsbTetherEnabled);
+                });
+                return;
+            }
             mConnectivityManager.setUsbTethering(!mUsbTetherEnabled);
         }
     }
@@ -102,11 +121,14 @@ public class UsbTetherTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
+        if (state.slash == null) {
+            state.slash = new SlashState();
+        }
+        state.icon = mIcon;
+        state.slash.isSlashed = !state.value;
         state.value = mUsbTetherEnabled;
         state.label = mContext.getString(R.string.quick_settings_usb_tether_label);
-        state.icon = mIcon;
-        state.state = !mUsbConnected ? Tile.STATE_UNAVAILABLE
-                : mUsbTetherEnabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
+        state.state = mUsbTetherEnabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
     }
 
     @Override
@@ -118,4 +140,11 @@ public class UsbTetherTile extends QSTileImpl<BooleanState> {
     public int getMetricsCategory() {
         return LineageMetricsLogger.TILE_USB_TETHER;
     }
+
+    private final class KeyguardCallback implements KeyguardMonitor.Callback {
+        @Override
+        public void onKeyguardShowingChanged() {
+            refreshState();
+        }
+    };
 }
