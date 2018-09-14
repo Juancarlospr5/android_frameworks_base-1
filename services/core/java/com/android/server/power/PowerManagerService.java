@@ -140,6 +140,7 @@ public final class PowerManagerService extends SystemService
     private static final int MSG_SCREEN_BRIGHTNESS_BOOST_TIMEOUT = 3;
     // Message: Polling to look for long held wake locks.
     private static final int MSG_CHECK_FOR_LONG_WAKELOCKS = 4;
+    private static final int MSG_WAKE_UP = 5;
 
     private static final int MSG_WAKE_UP = 5;
 
@@ -235,6 +236,9 @@ public final class PowerManagerService extends SystemService
 
     // Persistent property for last reboot reason
     private static final String LAST_REBOOT_PROPERTY = "persist.sys.boot.reason";
+
+    // Max time allowed for proximity check
+    private static final int MAX_PROXIMITY_WAIT = 200;
 
     private static final int DEFAULT_BUTTON_ON_DURATION = 5 * 1000;
 
@@ -705,6 +709,9 @@ public final class PowerManagerService extends SystemService
     private boolean mForceNavbar;
 
     private LcdPowerSaveInternal mLcdPowerSaveInternal;
+    private SensorManager mSensorManager;
+    private Sensor mProximitySensor;
+    private boolean mProximityWake;
 
     public PowerManagerService(Context context) {
         super(context);
@@ -713,6 +720,8 @@ public final class PowerManagerService extends SystemService
                 Process.THREAD_PRIORITY_DISPLAY, false /*allowIo*/);
         mHandlerThread.start();
         mHandler = new PowerManagerHandler(mHandlerThread.getLooper());
+        mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mConstants = new Constants(mHandler);
         mAmbientDisplayConfiguration = new AmbientDisplayConfiguration(mContext);
 
@@ -925,6 +934,9 @@ public final class PowerManagerService extends SystemService
         resolver.registerContentObserver(Settings.System.getUriFor(
                 Settings.System.WAKELOCK_BLOCKING_LIST),
                 false, mSettingsObserver, UserHandle.USER_ALL);
+        resolver.registerContentObserver(Settings.System.getUriFor(
+                Settings.System.PROXIMITY_ON_WAKE),
+                false, mSettingsObserver, UserHandle.USER_ALL);
 
         IVrManager vrManager = (IVrManager) getBinderService(Context.VR_SERVICE);
         if (vrManager != null) {
@@ -1080,6 +1092,9 @@ public final class PowerManagerService extends SystemService
         mProximityWakeEnabled = LineageSettings.System.getInt(resolver,
                 LineageSettings.System.PROXIMITY_ON_WAKE,
                 mProximityWakeEnabledByDefaultConfig ? 1 : 0) == 1;
+
+        mProximityWake = Settings.System.getInt(resolver,
+                Settings.System.PROXIMITY_ON_WAKE, 0) == 1;
 
         mDirty |= DIRTY_SETTINGS;
     }
@@ -5163,5 +5178,44 @@ public final class PowerManagerService extends SystemService
             mSensorManager.registerListener(mProximityListener,
                    mProximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
+    }
+
+    private void runWithProximityCheck(final Runnable r) {
+        if (mHandler.hasMessages(MSG_WAKE_UP)) {
+            // There is already a message queued;
+            return;
+        }
+        if (mProximityWake && mProximitySensor != null) {
+            final Message msg = mHandler.obtainMessage(MSG_WAKE_UP);
+            msg.obj = r;
+            mHandler.sendMessageDelayed(msg, MAX_PROXIMITY_WAIT);
+            runPostProximityCheck(r);
+        } else {
+            r.run();
+        }
+    }
+
+    private void runPostProximityCheck(final Runnable r) {
+        if (mSensorManager == null) {
+            r.run();
+            return;
+        }
+        mSensorManager.registerListener(new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (!mHandler.hasMessages(MSG_WAKE_UP)) {
+                    // The sensor took too long to return and
+                    // the wake event already triggered.
+                    return;
+                }
+                mHandler.removeMessages(MSG_WAKE_UP);
+                if (event.values[0] == mProximitySensor.getMaximumRange()) {
+                    r.run();
+                }
+                mSensorManager.unregisterListener(this);
+            }
+             @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+         }, mProximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 }
