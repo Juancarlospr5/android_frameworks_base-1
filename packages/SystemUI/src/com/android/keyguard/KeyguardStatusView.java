@@ -73,10 +73,6 @@ public class KeyguardStatusView extends GridLayout implements
     private KeyguardSliceView mKeyguardSlice;
     private Runnable mPendingMarqueeStart;
     private Handler mHandler;
-    //On the first boot, keygard will start to receiver TIME_TICK intent.
-    //And onScreenTurnedOff will not get called if power off when keyguard is not started.
-    //Set initial value to false to skip the above case.
-    private boolean mEnableRefresh = false;
 
     private ArraySet<View> mVisibleInDoze;
     private boolean mPulsing;
@@ -92,9 +88,7 @@ public class KeyguardStatusView extends GridLayout implements
 
         @Override
         public void onTimeChanged() {
-            if (mEnableRefresh) {
-             refreshTime();
-            }
+            refreshTime();
         }
 
         @Override
@@ -111,13 +105,11 @@ public class KeyguardStatusView extends GridLayout implements
         @Override
         public void onStartedWakingUp() {
             setEnableMarquee(true);
-            mEnableRefresh = true;
         }
 
         @Override
         public void onFinishedGoingToSleep(int why) {
             setEnableMarquee(false);
-            mEnableRefresh = false;
         }
 
         @Override

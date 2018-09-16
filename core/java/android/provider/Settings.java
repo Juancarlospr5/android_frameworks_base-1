@@ -4628,13 +4628,6 @@ public final class Settings {
          * @hide
          */
         public static final String SMART_PIXELS_ON_POWER_SAVE = "smart_pixels_on_power_save";
-
-        /**
-         * Whether to notification when the battery is fully charged
-         * @hide
-         */
-        public static final String BATTERY_FULLY_CHARGED_NOTIF = "battery_fully_charged_notif";
-
         
         /**
          * Defines the screen-off animation to display
