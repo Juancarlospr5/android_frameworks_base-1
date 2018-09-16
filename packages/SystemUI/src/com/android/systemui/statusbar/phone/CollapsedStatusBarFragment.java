@@ -98,6 +98,11 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private View mCustomCarrierLabel;
     private int mShowCarrierLabel;
 
+    // Statusbar Weather Image
+    private View mWeatherImageView;
+    private View mWeatherTextView;
+    private int mShowWeather;
+
     private class SettingsObserver extends ContentObserver {
        SettingsObserver(Handler handler) {
            super(handler);
@@ -106,6 +111,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
        void observe() {
          mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_SHOW_CARRIER),
+                    false, this, UserHandle.USER_ALL);
+         mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_SHOW_WEATHER_TEMP),
                     false, this, UserHandle.USER_ALL);
        }
 
@@ -158,6 +166,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mCenterClockLayout = (LinearLayout) mStatusBar.findViewById(R.id.center_clock_layout);
         mRightClock = mStatusBar.findViewById(R.id.right_clock);
         mCustomCarrierLabel = mStatusBar.findViewById(R.id.statusbar_carrier_text);
+        mWeatherTextView = mStatusBar.findViewById(R.id.weather_temp);
+        mWeatherImageView = mStatusBar.findViewById(R.id.weather_image);
         updateSettings(false);
         showSystemIconArea(false);
         initEmergencyCryptkeeperText();
@@ -396,6 +406,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                 Settings.System.STATUSBAR_CLOCK_STYLE, 0, UserHandle.USER_CURRENT);
         mShowCarrierLabel = Settings.System.getIntForUser(
                 getContext().getContentResolver(), Settings.System.STATUS_BAR_SHOW_CARRIER, 1,
+                UserHandle.USER_CURRENT);
+        mShowWeather = Settings.System.getIntForUser(
+                getContext().getContentResolver(), Settings.System.STATUS_BAR_SHOW_WEATHER_TEMP, 0,
                 UserHandle.USER_CURRENT);
         updateClockStyle(animate);
         setCarrierLabel(animate);
