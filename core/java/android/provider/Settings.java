@@ -4735,6 +4735,11 @@ public final class Settings {
         public static final String CARBON_CUSTOM_GESTURE_PACKAGE_DOWN = "carbon_custom_gesture_package_down";
 
         /**
+         * @hide
+         */
+        public static final String HOME_WAKE_BUTTON = "home_wake_button";
+
+        /**
          * Whether to enable Smart Pixels
          * @hide
          */
