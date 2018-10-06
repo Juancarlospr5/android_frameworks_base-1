@@ -75,6 +75,8 @@ public class QSSecurityFooter implements OnClickListener, DialogInterface.OnClic
     private int mFooterTextId;
     private int mFooterIconId;
 
+    private boolean mForceHideFooter;
+
     public QSSecurityFooter(QSPanel qsPanel, Context context) {
         mRootView = LayoutInflater.from(context)
                 .inflate(R.layout.quick_settings_footer, qsPanel, false);
@@ -150,6 +152,7 @@ public class QSSecurityFooter implements OnClickListener, DialogInterface.OnClic
         // Update visibility of footer
         mIsVisible = mShowWarnings && ((isDeviceManaged && !isDemoDevice) || hasCACerts || hasCACertsInWorkProfile ||
             vpnName != null || vpnNameWorkProfile != null);
+        mIsVisible = mIsVisible && !mForceHideFooter;
         // Update the string
         mFooterTextContent = getFooterText(isDeviceManaged, hasWorkProfile,
                 hasCACerts, hasCACertsInWorkProfile, isNetworkLoggingEnabled, vpnName,
@@ -511,5 +514,10 @@ public class QSSecurityFooter implements OnClickListener, DialogInterface.OnClic
         mShowWarnings = Settings.System.getIntForUser(
                 mContext.getContentResolver(), Settings.System.QS_FOOTER_WARNINGS, 1,
                 UserHandle.USER_CURRENT) == 1;
+    }
+
+    public void setForceHide(boolean value) {
+        mForceHideFooter = value;
+        handleRefreshState();
     }
 }
