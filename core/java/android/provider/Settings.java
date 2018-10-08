@@ -4333,7 +4333,6 @@ public final class Settings {
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 
         /**
-<<<<<<< HEAD
          * Whether to display sound panel in the power menu
          *
          * @hide
@@ -5186,6 +5185,18 @@ public final class Settings {
         public static final String LOCK_CLOCK_FONTS = "lock_clock_fonts";
 
         /**
+         * Which component to use for Recents UI
+         * 0 - Pie Recents (Quickstep)
+         * 1 - Oreo Recents (SystemUI)
+         * @hide
+         */
+        public static final String RECENTS_COMPONENT = "recents_component";
+
+        /** @hide */
+        public static final Validator RECENTS_COMPONENT_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 1);
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5258,7 +5269,8 @@ public final class Settings {
             BURN_IN_PROTECTION_INTERVAL,
             USE_OLD_MOBILETYPE,
             OMNI_NAVIGATION_BAR_RECENTS,
-            NOTIFICATION_SOUND_VIB_SCREEN_ON
+            NOTIFICATION_SOUND_VIB_SCREEN_ON,
+            RECENTS_COMPONENT
         };
 
         /**
@@ -5397,6 +5409,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(PROXIMITY_AUTO_SPEAKER_INCALL_ONLY);
             PRIVATE_SETTINGS.add(OMNI_NAVIGATION_BAR_RECENTS);
             PRIVATE_SETTINGS.add(NOTIFICATION_SOUND_VIB_SCREEN_ON);
+            PRIVATE_SETTINGS.add(RECENTS_COMPONENT);
         }
 
 
@@ -5509,6 +5522,7 @@ public final class Settings {
             VALIDATORS.put(USE_OLD_MOBILETYPE, USE_OLD_MOBILETYPE_VALIDATOR);
             VALIDATORS.put(OMNI_NAVIGATION_BAR_RECENTS, OMNI_NAVIGATION_BAR_RECENTS_VALIDATOR);
             VALIDATORS.put(NOTIFICATION_SOUND_VIB_SCREEN_ON, NOTIFICATION_SOUND_VIB_SCREEN_ON_VALIDATOR);
+            VALIDATORS.put(RECENTS_COMPONENT,RECENTS_COMPONENT_VALIDATOR);
         }
 
         /**
