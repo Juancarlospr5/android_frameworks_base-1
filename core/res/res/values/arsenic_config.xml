@@ -148,4 +148,7 @@
 
     <!-- Component name for the activity that will be presenting the Oreo's Recents UI -->
     <string name="config_recentsComponentNameOreo" translatable="false">com.android.systemui/.recents.RecentsActivity</string>
+
+    <!-- Component name of the combo network location provider. -->
+    <string name="config_comboNetworkLocationProvider" translatable="false">@null</string>
 </resources>
