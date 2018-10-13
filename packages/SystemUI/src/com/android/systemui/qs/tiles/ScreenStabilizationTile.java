@@ -1,5 +1,6 @@
 package com.android.systemui.qs.tiles;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -45,7 +46,8 @@ public class ScreenStabilizationTile extends QSTileImpl<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return new Intent(Settings.SCREEN_STABILIZATION_SETTINGS);
+        return new Intent().setComponent(new ComponentName(
+            "com.android.settings", "com.android.settings.Settings$ScreenActivity"));
     }
 
     @Override
