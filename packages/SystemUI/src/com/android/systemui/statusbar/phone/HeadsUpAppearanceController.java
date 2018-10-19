@@ -52,7 +52,6 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
     private final NotificationStackScrollLayout mStackScroller;
     private final HeadsUpStatusBarView mHeadsUpStatusBarView;
     private final ClockController mClockController;
-    private final View mOperatorNameView;
     private final DarkIconDispatcher mDarkIconDispatcher;
     private final NotificationPanelView mPanelView;
     private final Consumer<ExpandableNotificationRow>
@@ -77,8 +76,7 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
                 statusbarView.findViewById(R.id.heads_up_status_bar_view),
                 statusbarView.findViewById(R.id.notification_stack_scroller),
                 statusbarView.findViewById(R.id.notification_panel),
-                new ClockController(statusbarView),
-                statusbarView.findViewById(R.id.operator_name_frame));
+                new ClockController(statusbarView);
     }
 
     @VisibleForTesting
@@ -88,8 +86,7 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
             HeadsUpStatusBarView headsUpStatusBarView,
             NotificationStackScrollLayout stackScroller,
             NotificationPanelView panelView,
-            ClockController clockController,
-            View operatorNameView) {
+            ClockController clockController) {
         mNotificationIconAreaController = notificationIconAreaController;
         mHeadsUpManager = headsUpManager;
         mHeadsUpManager.addListener(this);
@@ -105,7 +102,6 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
         mStackScroller.addOnLayoutChangeListener(mStackScrollLayoutChangeListener);
         mStackScroller.setHeadsUpAppearanceController(this);
         mClockController = clockController;
-        mOperatorNameView = operatorNameView;
         mDarkIconDispatcher = Dependency.get(DarkIconDispatcher.class);
         mDarkIconDispatcher.addDarkReceiver(this);
     }
@@ -230,20 +226,12 @@ public class HeadsUpAppearanceController implements OnHeadsUpChangedListener,
                 if (!isRightClock) {
                     CrossFadeHelper.fadeOut(clockView, CONTENT_FADE_DURATION/* duration */,
                             0 /* delay */, () -> clockView.setVisibility(View.INVISIBLE));
-                if (mOperatorNameView != null) {
-                    CrossFadeHelper.fadeOut(mClockView, CONTENT_FADE_DURATION/* duration */,
-                            0 /* delay */, () -> mOperatorNameView.setVisibility(View.INVISIBLE));
-                }
             } else {
                 if (clockStyle == 0) {
                     CrossFadeHelper.fadeIn(mClockView, CONTENT_FADE_DURATION /* duration */,
                             CONTENT_FADE_DELAY /* delay */);
                 } else {
                     mClockView.setVisibility(View.GONE);
-                }
-                if (mOperatorNameView != null) {
-                    CrossFadeHelper.fadeIn(mOperatorNameView, CONTENT_FADE_DURATION /* duration */,
-                            CONTENT_FADE_DELAY /* delay */);
                 }
                 CrossFadeHelper.fadeOut(mHeadsUpStatusBarView, CONTENT_FADE_DURATION/* duration */,
                         0 /* delay */, () -> mHeadsUpStatusBarView.setVisibility(View.GONE));
