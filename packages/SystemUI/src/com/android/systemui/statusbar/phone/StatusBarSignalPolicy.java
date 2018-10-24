@@ -62,7 +62,7 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
     private final String mSlotEthernet;
     private final String mSlotVpn;
 
-    private final Context mContext;
+    private static Context mContext;
     private final StatusBarIconController mIconController;
     private final NetworkController mNetworkController;
     private final SecurityController mSecurityController;
@@ -103,7 +103,6 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
         mSecurityController.addCallback(this);
 
         TelephonyExtUtils.getInstance(context).addListener(this);
-        extTelephony = TelephonyExtUtils.getInstance(context);
     }
 
     @Override
