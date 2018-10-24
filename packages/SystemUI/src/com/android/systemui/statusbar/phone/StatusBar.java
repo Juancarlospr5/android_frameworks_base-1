@@ -4538,18 +4538,29 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
      */
     protected void updateTheme() {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
-
-        // 0 = auto, 1 = time-based, 2 = light, 3 = dark
-        final int globalStyleSetting = LineageSettings.System.getInt(mContext.getContentResolver(),
-                LineageSettings.System.BERRY_GLOBAL_STYLE, 0);
+        int userThemeSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SYSTEM_UI_THEME, 0, mLockscreenUserManager.getCurrentUserId());
         boolean useBlackTheme = false;
         boolean useDarkTheme = false;
-        if (mCurrentTheme == 0) {
+	    final boolean wallpaperWantsDarkTheme;
+        if (userThemeSetting == 0 || userThemeSetting == 1) {
             // The system wallpaper defines if QS should be light or dark.
-            WallpaperColors systemColors = mColorExtractor
-                    .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            useDarkTheme = systemColors != null
-                    && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
+	        if (userThemeSetting == 0) {
+                WallpaperColors systemColors = mColorExtractor
+                        .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+                wallpaperWantsDarkTheme = systemColors != null
+                        && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
+	        } else {
+	            wallpaperWantsDarkTheme = false;
+	        }
+	        final Configuration config = mContext.getResources().getConfiguration();
+            final boolean nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
+                    && (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES;
+            useDarkTheme = wallpaperWantsDarkTheme || nightModeWantsDarkTheme;
+            // Check for black and white accent so we don't end up
+            // with white on white or black on black
+            unfuckBlackWhiteAccent();
         } else {
             useBlackTheme = mCurrentTheme == 3;
             useDarkTheme = mCurrentTheme == 2;
@@ -4560,33 +4571,13 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             unfuckBlackWhiteAccent();
             ThemeAccentUtils.setLightDarkTheme(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), useDarkTheme);
         }
-        final Configuration config = mContext.getResources().getConfiguration();
-        final boolean nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
-                && (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                    == Configuration.UI_MODE_NIGHT_YES;
-        final boolean useDarkTheme;
-
-        switch (globalStyleSetting) {
-            case 1:
-                useDarkTheme = isLiveDisplayNightModeOn();
-                break;
-            case 2:
-                useDarkTheme = false;
-                break;
-            case 3:
-                useDarkTheme = true;
-                break;
-            default:
-                useDarkTheme = wallpaperWantsDarkTheme || nightModeWantsDarkTheme;
-                break;
-        }
 
         if (isUsingBlackTheme() != useBlackTheme) {
             // Check for black and white accent so we don't end up
             // with white on white or black on black
             unfuckBlackWhiteAccent();
             ThemeAccentUtils.setLightBlackTheme(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), useBlackTheme);
-        }
+}
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
