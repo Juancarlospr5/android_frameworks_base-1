@@ -428,6 +428,7 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
         public Context context;
         private boolean mProvisioned = true;
         public int volteId;
+        public Context mContext;
 
         private MobileIconState(int subId, Context context) {
             super();
@@ -463,7 +464,7 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
 
             return Objects
                     .hash(super.hashCode(), subId, strengthId, typeId, roaming, needsLeadingPadding,
-                            typeContentDescription);
+                            typeContentDescription, mContext);
         }
 
         public MobileIconState copy() {
@@ -483,6 +484,7 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
             other.provisioned = provisioned;
             other.typeContentDescription = typeContentDescription;
             other.volteId = volteId;
+            other.mContext = mContext;
         }
 
         private static List<MobileIconState> copyStates(List<MobileIconState> inStates) {
