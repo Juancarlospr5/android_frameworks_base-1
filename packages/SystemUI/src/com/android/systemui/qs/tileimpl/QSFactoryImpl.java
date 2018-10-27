@@ -56,6 +56,7 @@ import com.android.systemui.qs.tiles.LiveDisplayTile;
 import com.android.systemui.qs.tiles.LocaleTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.LteTile;
+import com.android.systemui.qs.tiles.MusicTile;
 import com.android.systemui.qs.tiles.NavBarTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.NightDisplayTile;
@@ -208,6 +209,8 @@ public class QSFactoryImpl implements QSFactory {
                 return new LocaleTile(mHost);
             case "anbi":
                 return new ANBITile(mHost);
+            case "music":
+                return new MusicTile(mHost);
         }
 
         // Intent tiles.
