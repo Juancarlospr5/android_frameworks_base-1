@@ -5174,6 +5174,7 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
             if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_LANDSCAPE)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_PORTRAIT)) ||
@@ -5194,7 +5195,6 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                 stockTileStyle();
                 updateTileStyle();
             } 
-            update();
         }
 
          public void update() {
@@ -5203,9 +5203,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                     Settings.System.USE_OLD_MOBILETYPE, 0,
                     UserHandle.USER_CURRENT) != 0;
             TelephonyIcons.updateIcons(USE_OLD_MOBILETYPE);
+            updateTheme();
             setQsPanelOptions();
             setQsRowsColumns();
-            updateTheme();
         }
     }
 
