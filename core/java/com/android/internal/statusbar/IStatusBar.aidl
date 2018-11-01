@@ -157,4 +157,5 @@ oneway interface IStatusBar
      * Arsenic
      */
     void toggleCameraFlash();
+    void leftInLandscapeChanged(boolean isLeft);
 }
