@@ -159,24 +159,10 @@
 
     <string name="lockscreen_tuner_activity">Lockscreen shortcuts</string>
 
-    <!-- App circle sidebar -->  
-    <string name="app_float_maximize_item_title">Maximize</string>  
-    <string name="app_float_item_title">Float view</string>  
-    <string name="app_stop_item_title">Kill app</string>  
-
-    <!-- Omni weather -->
-    <string name="omnijaws_service_error">Error</string>
-    <string name="omnijaws_service_unkown">No weather data</string>
-    <string name="omnijaws_service_error_long">Error loading weather data</string>
-    <string name="omnijaws_service_disabled">Service is disabled</string>
-    <string name="omnijaws_detail_header">Weather</string>
-    <string name="omnijaws_label_default">Weather</string>
-    <string name="omnijaws_current_text">Now</string>
-    <string name="omnijaws_package_not_available">OmniJaws not available</string>
-    <string name="omnijaws_service_last_update">Last update:</string>
-
-    <!-- Weather string format in expanded statusbar header -->
-    <string name="status_bar_weather_format"><xliff:g id="temp">%1$s</xliff:g></string>
+    <!-- App circle sidebar -->
+    <string name="app_float_maximize_item_title">Maximize</string>
+    <string name="app_float_item_title">Float view</string> 
+    <string name="app_stop_item_title">Kill app</string>
 
     <!-- Gaming Mode -->
     <string name="gaming_mode_tile_title">Gaming Mode</string>
