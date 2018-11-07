@@ -5245,6 +5245,12 @@ public final class Settings {
         public static final String FLING_PULSE_SMOOTHING_ENABLED = "fling_pulse_smoothing_enabled";
 
         /**
+         * Pulse Fading units opacity
+         * @hide
+         */
+        public static final String PULSE_FADING_BLOCKS_OPACITY = "pulse_fading_blocks_opacity";
+
+        /**
          * Whether to show the visualizer on the lock screen
          * @hide
          */
