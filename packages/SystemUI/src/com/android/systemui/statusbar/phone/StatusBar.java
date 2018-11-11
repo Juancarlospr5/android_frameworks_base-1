@@ -4716,6 +4716,18 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
         ThemeAccentUtils.stockNotificationStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId());
     }
 
+    // Switches qs header style from stock to custom
+    public void updateQSHeaderStyle() {
+        int qsHeaderStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QS_HEADER_STYLE, 0, mLockscreenUserManager.getCurrentUserId());
+        ThemeAccentUtils.updateQSHeaderStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), qsHeaderStyle);
+    }
+
+    // Unload all qs header styles back to stock
+    public void stockQSHeaderStyle() {
+        ThemeAccentUtils.stockQSHeaderStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId());
+    }
+
     private void updateDozingState() {
         Trace.traceCounter(Trace.TRACE_TAG_APP, "dozing", mDozing ? 1 : 0);
         Trace.beginSection("StatusBar#updateDozingState");
@@ -5434,6 +5446,9 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_STYLE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_HEADER_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5478,6 +5493,10 @@ public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunabl
                     Settings.System.NOTIFICATION_STYLE))) {
                 stockNotificationStyle();
                 updateNotificationStyle();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.QS_HEADER_STYLE))) {
+                stockQSHeaderStyle();
+                updateQSHeaderStyle();
             }
         }
 
