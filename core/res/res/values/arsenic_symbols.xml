@@ -197,4 +197,9 @@
   <!-- Ambient play -->
   <java-symbol type="string" name="ambient_recognition_notification" />
   <java-symbol type="string" name="ambient_recognition_information" />
+
+  <!-- Powermenu animations -->
+  <java-symbol type="style" name="GlobalActionsAnimation" />
+  <java-symbol type="style" name="GlobalActionsAnimationTop" />
+  <java-symbol type="style" name="GlobalActionsAnimationEnter" />
 </resources>
