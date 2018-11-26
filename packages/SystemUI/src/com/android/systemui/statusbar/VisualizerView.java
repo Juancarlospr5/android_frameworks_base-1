@@ -171,7 +171,7 @@ public class VisualizerView extends View
 
     private void updateViewVisibility() {
         final int curVis = getVisibility();
-        final int newVis = mStatusBarState != StatusBarState.SHADE
+        final int newVis = mVisible && mStatusBarState != StatusBarState.SHADE
                 && mVisualizerEnabled ? View.VISIBLE : View.GONE;
         if (curVis != newVis) {
             setVisibility(newVis);
@@ -182,6 +182,10 @@ public class VisualizerView extends View
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+        if (mCurrentBitmap == null)
+            setColor(Color.TRANSPARENT);
+
         mSettingObserver = new SettingsObserver(new Handler());
         mSettingObserver.observe();
         mSettingObserver.update();
@@ -231,13 +235,11 @@ public class VisualizerView extends View
     }
 
     public void setVisible(boolean visible) {
-        if (mVisible != visible) {
-            if (DEBUG) {
-                Log.i(TAG, "setVisible() called with visible = [" + visible + "]");
-            }
-            mVisible = visible;
-            checkStateChanged();
+        if (DEBUG) {
+            Log.i(TAG, "setVisible() called with visible = [" + visible + "]");
         }
+        mVisible = visible;
+        updateViewVisibility();
     }
 
     public void setDozing(boolean dozing) {
@@ -346,7 +348,8 @@ public class VisualizerView extends View
     }
 
     private void checkStateChanged() {
-        if (getVisibility() == View.VISIBLE && mVisible && mPlaying && !mDozing && !mPowerSaveMode
+        boolean isVisible = getVisibility() == View.VISIBLE;
+        if (isVisible && mPlaying && !mDozing && !mPowerSaveMode
                 && mVisualizerEnabled && !mOccluded) {
             if (!mDisplaying) {
                 mDisplaying = true;
@@ -360,7 +363,7 @@ public class VisualizerView extends View
             if (mDisplaying) {
                 unlink();
                 mDisplaying = false;
-                if (mVisible) {
+                if (isVisible) {
                     animate()
                             .alpha(0f)
                             .setDuration(600);
