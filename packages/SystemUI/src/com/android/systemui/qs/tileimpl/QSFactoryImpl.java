@@ -62,7 +62,6 @@ import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.NightDisplayTile;
 import com.android.systemui.qs.tiles.ReadingModeTile;
 import com.android.systemui.qs.tiles.RebootTile;
-import com.android.systemui.qs.tiles.PieTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenrecordTile;
 import com.android.systemui.qs.tiles.ScreenshotTile;
@@ -200,8 +199,6 @@ public class QSFactoryImpl implements QSFactory {
                 return new ThemeTile(mHost);
             case "nowplaying":
                 return new AmbientPlayTile(mHost);
-            case "pie":
-                return new PieTile(mHost);
             case "locale":
                 return new LocaleTile(mHost);
             case "anbi":
