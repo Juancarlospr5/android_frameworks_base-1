@@ -126,8 +126,9 @@
   <java-symbol type="bool" name="config_multiColorNotificationLed" />
 
   <!-- Bottom gestures -->
-  <java-symbol type="dimen" name="nav_gesture_swipe_min_length" />
-  <java-symbol type="dimen" name="nav_gesture_long_press_max_length" />
+  <java-symbol type="integer" name="nav_gesture_swipe_min_length" />
+  <java-symbol type="integer" name="nav_gesture_swipe_timout" />
+  <java-symbol type="integer" name="nav_gesture_move_threshold" />
 
   <!-- In call notification vibration strength -->
   <java-symbol type="integer" name="config_in_call_notification_vibration_strength" />
