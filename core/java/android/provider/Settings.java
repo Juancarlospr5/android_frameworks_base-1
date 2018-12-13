@@ -4212,9 +4212,6 @@ public final class Settings {
         */
         public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
         
-        public static final String POCKET_JUDGE = "pocket_judge";
-
-
         /**
           * Volume keys control cursor in text fields (default is 0)
           * 0 - Disabled
@@ -4396,6 +4393,13 @@ public final class Settings {
          * @hide
          */
         public static final String POWERMENU_LOGOUT = "powermenu_logout";
+
+        /**
+         * Whether to display lock in the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_LOCKDOWN = "powermenu_lockdown";
 
         /**
          * Toast icon
@@ -5033,6 +5037,14 @@ public final class Settings {
          * @hide
          */
         public static final String SHOW_FOURG_ICON = "show_fourg_icon";
+
+        /**
+         * Whether allowing pocket service to register sensors and dispatch informations.
+         * 0 = disabled
+         * 1 = enabled
+         * @hide
+         */
+        public static final String POCKET_JUDGE = "pocket_judge";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
