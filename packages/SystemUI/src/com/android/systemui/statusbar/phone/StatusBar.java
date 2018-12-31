@@ -5405,7 +5405,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         SbSettingsObserver(Handler handler) {
             super(handler);
         }
-         void observe() {
+        void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_FOOTER_WARNINGS),
@@ -5506,7 +5506,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_INFO),
                     false, this, UserHandle.USER_ALL);
-        }
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                   Settings.System.LOCKSCREEN_CLOCK_SELECTION),
+                   false, this, UserHandle.USER_ALL);
+	    }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
@@ -5588,7 +5591,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.Secure.AMBIENT_VISUALIZER_ENABLED))) {
                 setAmbientVis();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_CLOCK)) ||
-                   uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_INFO))) {
+                uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_INFO)) ||
+                uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_CLOCK_SELECTION))) {
                 updateKeyguardStatusSettings();
             }
         }
