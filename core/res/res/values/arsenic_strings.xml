@@ -56,9 +56,6 @@
     <string name="screenrecord_notif_error">Unable to record screen</string>
     <string name="notification_channel_screenrecord">Screenrecords</string>
 
-    <!-- App Blacklist -->
-    <string name="app_blacklist">Blacklist app</string>
-
     <!-- Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permlab_fakePackageSignature">Spoof package signature</string>
     <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
