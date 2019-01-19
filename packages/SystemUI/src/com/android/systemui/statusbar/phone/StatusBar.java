@@ -636,6 +636,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     // LS visualizer on Ambient Display
     private boolean mAmbientVisualizer;
 
+    private boolean mWallpaperSupportsAmbientMode;
     private BroadcastReceiver mWallpaperChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -645,13 +646,16 @@ public class StatusBar extends SystemUI implements DemoMode,
                 return;
             }
             WallpaperInfo info = wallpaperManager.getWallpaperInfo();
-            final boolean supportsAmbientMode = info != null &&
-                    info.getSupportsAmbientMode();
+            mWallpaperSupportsAmbientMode = info != null && info.getSupportsAmbientMode();
 
-            mStatusBarWindowManager.setWallpaperSupportsAmbientMode(supportsAmbientMode);
-            mScrimController.setWallpaperSupportsAmbientMode(supportsAmbientMode);
+            mStatusBarWindowManager.setWallpaperSupportsAmbientMode(mWallpaperSupportsAmbientMode);
+            mScrimController.setWallpaperSupportsAmbientMode(mWallpaperSupportsAmbientMode);
         }
     };
+
+    public boolean wallpaperSupportsAmbientMode(){
+        return mWallpaperSupportsAmbientMode;
+    }
 
     private Runnable mLaunchTransitionEndRunnable;
     protected boolean mLaunchTransitionFadingAway;
