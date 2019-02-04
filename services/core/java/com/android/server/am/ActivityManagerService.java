@@ -27645,6 +27645,10 @@ public class ActivityManagerService extends IActivityManager.Stub
         }
     }
 
+    Context getContext() {
+        return mContext;
+    }
+
     public boolean shouldForceLongScreen(String packageName) {
         return mLineageActivityManager.shouldForceLongScreen(packageName);
     }
