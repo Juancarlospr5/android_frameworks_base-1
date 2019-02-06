@@ -42,6 +42,7 @@ public class ThemeAccentUtils {
         "com.android.system.theme.dark", // 0
         "com.android.settings.theme.dark", // 1
         "com.android.systemui.theme.dark", // 2
+        "com.android.wellbeing.theme.dark", // 3
     };
 
     // Black themes
@@ -49,6 +50,7 @@ public class ThemeAccentUtils {
         "com.android.system.theme.black", // 0
         "com.android.settings.theme.black", // 1
         "com.android.systemui.theme.black", // 2
+        "com.android.wellbeing.theme.black", // 3
     };
 
     // Notification themes

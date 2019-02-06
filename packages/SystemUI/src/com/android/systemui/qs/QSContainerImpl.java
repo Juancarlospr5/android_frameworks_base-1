@@ -394,8 +394,8 @@ public class QSContainerImpl extends FrameLayout implements
         // TODO: Commonise isUsingDarkTheme and isUsingDarkTheme to a new class.
         // Perhaps even more checks if necessary.
 
-        String qsthemeDark = "com.android.systemui.theme.dark.arsenic";
-        String qsthemeBlack = "com.android.systemui.theme.black.arsenic";
+        String qsthemeDark = "com.android.systemui.theme.dark";
+        String qsthemeBlack = "com.android.systemui.theme.black";
         String qsAccentBlack = "com.android.system.theme.qs_black";
         String qsAccentWhite = "com.android.system.theme.qs_white";
         String qstheme = null;
