@@ -4903,7 +4903,7 @@ public final class Settings {
         public static final String SCREENRECORD_QUALITY_MODE = "screenrecord_quality_mode";
 
         /**
-         * Whether to show the brightness slider in quick settings panel
+         * Whether to show the visualizer on the lock screen
          * @hide
          */
         public static final String LOCKSCREEN_VISUALIZER_ENABLED = "lockscreen_visualizer_enabled";
