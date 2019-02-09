@@ -250,7 +250,7 @@ public class NotificationPanelView extends PanelView implements
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
     private LockPatternUtils mLockPatternUtils;
 
-    private boolean mStatusBarLockedOnSecureKeyguard;
+    private boolean mStatusBarOnSecureKeyguard;
 
     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
         @Override
@@ -677,7 +677,7 @@ public class NotificationPanelView extends PanelView implements
 
     private boolean isQSEventBlocked() {
         return mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser())
-            && mStatusBarLockedOnSecureKeyguard && mKeyguardOrShadeShowing;
+            && !mStatusBarOnSecureKeyguard && mKeyguardOrShadeShowing;
     }
 
     public void setQsExpansionEnabled(boolean qsExpansionEnabled) {
@@ -2793,7 +2793,7 @@ public class NotificationPanelView extends PanelView implements
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD),
+                    Settings.Secure.STATUS_BAR_ON_SECURE_KEYGUARD),
                     false, this, UserHandle.USER_ALL);
             update();
         }
@@ -2815,8 +2815,8 @@ public class NotificationPanelView extends PanelView implements
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
-            mStatusBarLockedOnSecureKeyguard = Settings.Secure.getIntForUser(
-                    resolver, Settings.Secure.STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD, 0,
+            mStatusBarOnSecureKeyguard = Settings.Secure.getIntForUser(
+                    resolver, Settings.Secure.STATUS_BAR_ON_SECURE_KEYGUARD, 1,
                     UserHandle.USER_CURRENT) == 1;
         }
     }
