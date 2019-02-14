@@ -43,6 +43,24 @@ public class ThemeAccentUtils {
         "com.android.wellbeing.overlay.dark", // 4
     };
 
+    // Shady themes
+    private static final String[] SHADY_THEMES = {
+        "com.android.system.overlay.shady", // 0
+        "com.android.systemui.overlay.shady", // 1
+        "com.android.settings.overlay.shady", // 2
+        "com.android.settings.intelligence.overlay.shady", // 3
+        "com.android.wellbeing.overlay.shady", // 4
+    };
+
+    // Glassy themes
+    private static final String[] GLASSY_THEMES = {
+        "com.android.system.overlay.glassy", // 0
+        "com.android.systemui.overlay.glassy", // 1
+        "com.android.settings.overlay.glassy", // 2
+        "com.android.settings.intelligence.overlay.glassy", // 3
+        "com.android.wellbeing.overlay.glassy", // 4
+    };
+
     // Accents
     private static final String[] ACCENTS = {
         "default_accent", // 0
@@ -104,6 +122,43 @@ public class ThemeAccentUtils {
         "com.accents.jadegreen", // 56
     };
 
+    // Themes
+    private static final String[] THEMES = {
+        "default_theme", // 0
+        "com.arsenic.themes.vermilion", // 1
+        "com.arsenic.themes.firebrick", // 2
+        "com.arsenic.themes.americanrose", // 3
+        "com.arsenic.themes.cerise", // 4
+        "com.arsenic.themes.mauve", // 5
+        "com.arsenic.themes.amaranth", // 6
+        "com.arsenic.themes.violet", // 7
+        "com.arsenic.themes.indigo", // 8
+        "com.arsenic.themes.fuchsia", // 9
+        "com.arsenic.themes.amethyst", // 10
+        "com.arsenic.themes.ultramarine", // 11
+        "com.arsenic.themes.persianblue", // 12
+        "com.arsenic.themes.cobalt", // 13
+        "com.arsenic.themes.darkviolet", // 14
+        "com.arsenic.themes.royalblue", // 15
+        "com.arsenic.themes.unblue", // 16
+        "com.arsenic.themes.denim", // 17
+        "com.arsenic.themes.azure", // 18
+        "com.arsenic.themes.pinegreen", // 19
+        "com.arsenic.themes.darkturquoise", // 20
+        "com.arsenic.themes.aquamarine", // 21
+        "com.arsenic.themes.selectiveyellow", // 22
+        "com.arsenic.themes.ubuntuorange", // 23
+        "com.arsenic.themes.scarlet", // 24
+        "com.arsenic.themes.russet", // 25
+        "com.arsenic.themes.bistre", // 26
+        "com.arsenic.themes.slategrey", // 27
+        "com.arsenic.themes.arsenic", // 28
+        "com.arsenic.themes.grey", // 29
+        "com.arsenic.themes.darkaf", // 30
+        "com.arsenic.themes.almostblack", // 31
+        "com.arsenic.themes.black", // 32
+    };
+
     private static final String[] QS_TILE_THEMES = {
         "com.android.systemui.qstile.default", // 0
         "com.android.systemui.qstile.circlegradient", // 1
@@ -161,6 +216,30 @@ public class ThemeAccentUtils {
         return themeInfo != null && themeInfo.isEnabled();
     }
 
+    // Check for the shady system theme
+    public static boolean isUsingShadyTheme(IOverlayManager om, int userId) {
+        OverlayInfo themeInfo = null;
+        try {
+            themeInfo = om.getOverlayInfo(SHADY_THEMES[0],
+                    userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return themeInfo != null && themeInfo.isEnabled();
+    }
+
+    // Check for the glassy system theme
+    public static boolean isUsingGlassyTheme(IOverlayManager om, int userId) {
+        OverlayInfo themeInfo = null;
+        try {
+            themeInfo = om.getOverlayInfo(GLASSY_THEMES[0],
+                    userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return themeInfo != null && themeInfo.isEnabled();
+    }
+
     // Set dark theme
     public static void setLightDarkTheme(IOverlayManager om, int userId, boolean useDarkTheme) {
         for (String theme : DARK_THEMES) {
@@ -174,11 +253,37 @@ public class ThemeAccentUtils {
         }
     }
 
+    // Set shady theme
+    public static void setShadyTheme(IOverlayManager om, int userId, boolean useShadyTheme) {
+        for (String theme : SHADY_THEMES) {
+                try {
+                    om.setEnabled(theme,
+                        useShadyTheme, userId);
+                    unfuckBlackWhiteAccent(om, userId);
+                } catch (RemoteException e) {
+                    Log.w(TAG, "Can't change theme", e);
+                }
+        }
+    }
+
+    // Set glassy theme
+    public static void setGlassyTheme(IOverlayManager om, int userId, boolean useGlassyTheme) {
+        for (String theme : GLASSY_THEMES) {
+                try {
+                    om.setEnabled(theme,
+                        useGlassyTheme, userId);
+                    unfuckBlackWhiteAccent(om, userId);
+                } catch (RemoteException e) {
+                    Log.w(TAG, "Can't change theme", e);
+                }
+        }
+    }
+
     // Check for black and white accent overlays
     public static void unfuckBlackWhiteAccent(IOverlayManager om, int userId) {
         OverlayInfo themeInfo = null;
         try {
-            if (isUsingDarkTheme(om, userId)) {
+            if (isUsingDarkTheme(om, userId) || isUsingShadyTheme(om, userId) || isUsingGlassyTheme(om, userId)) {
                 themeInfo = om.getOverlayInfo(ACCENTS[20],
                         userId);
                 if (themeInfo != null && themeInfo.isEnabled()) {
@@ -234,7 +339,7 @@ public class ThemeAccentUtils {
         } else if (accentSetting == 20) {
             try {
                 // If using a dark theme we use the white accent, otherwise use the black accent
-                if (isUsingDarkTheme(om, userId)) {
+                if (isUsingDarkTheme(om, userId) || isUsingShadyTheme(om, userId)|| isUsingGlassyTheme(om, userId)) {
                     om.setEnabled(ACCENTS[21],
                             true, userId);
                 } else {
@@ -254,6 +359,46 @@ public class ThemeAccentUtils {
             String accent = ACCENTS[i];
             try {
                 om.setEnabled(accent,
+                        false /*disable*/, userId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Check for any theme overlay
+    public static boolean isUsingTheme(IOverlayManager om, int userId, int theme) {
+        OverlayInfo themeInfo = null;
+        try {
+            themeInfo = om.getOverlayInfo(THEMES[theme],
+                    userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return themeInfo != null && themeInfo.isEnabled();
+    }
+
+    // Switches theme from to another or back to stock
+    public static void updateThemes(IOverlayManager om, int userId, int themeSetting) {
+        if (themeSetting == 0) {
+            unloadThemes(om, userId);
+        } else {
+            try {
+                om.setEnabled(THEMES[themeSetting],
+                        true, userId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        }
+    }
+
+    // Unload all the themes
+    public static void unloadThemes(IOverlayManager om, int userId) {
+        // skip index 0
+        for (int i = 1; i < THEMES.length; i++) {
+            String theme = THEMES[i];
+            try {
+                om.setEnabled(theme,
                         false /*disable*/, userId);
             } catch (RemoteException e) {
                 e.printStackTrace();
