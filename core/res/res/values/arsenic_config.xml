@@ -184,4 +184,7 @@
 
     <!-- Whether to allow sending active app broadcast -->
     <bool name="config_allowActivePackageBroadcast">false</bool>
+
+    <!-- Whether to enable oneplus cam hack -->
+    <bool name="config_enableOPcamhack">false</bool>
 </resources>
