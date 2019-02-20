@@ -97,6 +97,7 @@ import android.media.session.PlaybackState;
 import android.metrics.LogMaker;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -4619,6 +4620,14 @@ public class StatusBar extends SystemUI implements DemoMode,
                 Settings.System.SYSTEM_UI_THEME, 0, mLockscreenUserManager.getCurrentUserId());
     }
 
+    private boolean themeNeedsRefresh(){
+        if (mContext.getSharedPreferences("systemui_theming", 0).getString("build_fingerprint", "").equals(Build.FINGERPRINT)){
+            return false;
+        }
+        mContext.getSharedPreferences("systemui_theming", 0).edit().putString("build_fingerprint", Build.FINGERPRINT).commit();
+        return true;
+    }
+
     /**
      * Switches theme from light to dark and vice-versa.
      */
@@ -4650,21 +4659,21 @@ public class StatusBar extends SystemUI implements DemoMode,
             useGlassyTheme = mCurrentTheme == 4;
         }
 
-        if (isUsingDarkTheme() != useDarkTheme) {
+        if (themeNeedsRefresh() || isUsingDarkTheme() != useDarkTheme) {
             // Check for black and white accent so we don't end up
             // with white on white or black on black
             unfuckBlackWhiteAccent();
             ThemeAccentUtils.setLightDarkTheme(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), useDarkTheme);
         }
 
-        if (isUsingShadyTheme() != useShadyTheme) {
+        if (themeNeedsRefresh() || isUsingShadyTheme() != useShadyTheme) {
             // Check for black and white accent so we don't end up
             // with white on white or black on black
             unfuckBlackWhiteAccent();
             ThemeAccentUtils.setShadyTheme(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), useShadyTheme);
         }
 
-        if (isUsingGlassyTheme() != useGlassyTheme) {
+        if (themeNeedsRefresh() || isUsingGlassyTheme() != useGlassyTheme) {
             // Check for black and white accent so we don't end up
             // with white on white or black on black
             unfuckBlackWhiteAccent();
