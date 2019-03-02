@@ -28,13 +28,14 @@
  */
 package com.android.server.display;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import android.content.Context;
 import android.media.RemoteDisplay;
 import android.os.Handler;
 import android.util.Slog;
-import android.content.Context;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 class ExtendedRemoteDisplayHelper {
     private static final String TAG = "ExtendedRemoteDisplayHelper";
@@ -90,10 +91,9 @@ class ExtendedRemoteDisplayHelper {
      * Starts listening for displays to be connected on the specified interface.
      *
      * @param iface The interface address and port in the form "x.x.x.x:y".
-     * @param listener The listener to invoke
-     *         when displays are connected or disconnected.
+     * @param listener The listener to invoke when displays are connected or disconnected.
      * @param handler The handler on which to invoke the listener.
-     * @param context The current service context
+     * @param context The current service context.
      *  */
     public static Object listen(String iface, RemoteDisplay.Listener listener,
                                          Handler handler, Context context)
