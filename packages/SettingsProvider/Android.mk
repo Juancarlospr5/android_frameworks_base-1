@@ -7,7 +7,12 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src) \
     src/com/android/providers/settings/EventLogTags.logtags
 
 LOCAL_JAVA_LIBRARIES := telephony-common ims-common
+
+LOCAL_STATIC_ANDROID_LIBRARIES := \
+    android-support-v14-preference
+
 LOCAL_STATIC_JAVA_LIBRARIES := junit legacy-android-test \
+    org.lineageos.platform.internal \
     android-support-annotations \
     android-support-v4 \
     android-support-v7-appcompat \
