@@ -308,14 +308,14 @@ import com.android.internal.policy.PhoneWindow;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.arsenic.ArsenicUtils;
+import com.android.internal.util.arsenic.DeviceUtils;
 import com.android.internal.util.hwkeys.ActionHandler;
-import com.android.internal.util.hwkeys.ActionUtils;
+import com.android.internal.util.hwkeys.ActionUtil;
 import com.android.internal.util.ScreenshotHelper;
 import com.android.internal.util.gesture.EdgeGesturePosition;
 import com.android.internal.util.gesture.EdgeServiceConstants;
 import com.android.internal.util.arsenic.DeviceUtils;
 import com.android.internal.util.ScreenShapeHelper;
-import com.android.internal.util.arsenic.DeviceUtils;
 import com.android.internal.widget.PointerLocationView;
 import com.android.server.GestureLauncherService;
 import com.android.server.LocalServices;
@@ -570,6 +570,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     WindowState mStatusBar = null;
     private final int[] mStatusBarHeightForRotation = new int[4];
     WindowState mNavigationBar = null;
+    boolean mHasNavigationBar = false;
     // User defined bar visibility, regardless of factory configuration
     boolean mNavbarVisible = false;
     boolean mNavigationBarCanMove = false; // can the navigation bar ever move to the side?
@@ -1021,9 +1022,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private PendingIntent mTorchOffPendingIntent;
     private boolean mHasPermanentMenuKey;
 
-    private boolean mClearedBecauseOfForceShow;
-    private boolean mTopWindowIsKeyguard;
-
     private boolean mHideNotch;
 
     private class PolicyHandler extends Handler {
@@ -1142,7 +1140,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     KeyEvent event = (KeyEvent) msg.obj;
                     mIsLongPress = true;
                     break;
-                }
                 case HardkeyActionHandler.MSG_FIRE_HOME:
                     launchHomeFromHotKey();
                     break;
@@ -2214,7 +2211,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         IDreamManager dreamManager = getDreamManager();
 
         try {
-            if (dreamManager != null && dreamManager.isDreaming()) {
+            if (dreamManager != null && dreamManager.isDreaming() && !dreamManager.isDozing()) {
                 return true;
             }
         } catch (RemoteException e) {
@@ -3693,7 +3690,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     
             boolean doShowNavbar = Settings.Secure.getIntForUser(resolver,
                     Settings.Secure.NAVIGATION_BAR_VISIBLE,
-                    ActionUtils.hasNavbarByDefault(mContext) ? 1 : 0,
+                    ActionUtil.hasNavbarByDefault(mContext) ? 1 : 0,
                     UserHandle.USER_CURRENT) == 1;
             if (doShowNavbar != mNavbarVisible) {
                 mNavbarVisible = doShowNavbar;
@@ -3706,7 +3703,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         boolean doShowNavbar = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.NAVIGATION_BAR_VISIBLE,
-                ActionUtils.hasNavbarByDefault(mContext) ? 1 : 0,
+                ActionUtil.hasNavbarByDefault(mContext) ? 1 : 0,
                 UserHandle.USER_CURRENT) == 1;
         if (doShowNavbar != mNavbarVisible) {
             mNavbarVisible = doShowNavbar;
@@ -5960,7 +5957,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 & ~mForceClearedSystemUiFlags;
     }
 
-    @Override
+     @Override
     // TODO: Should probably be moved into DisplayFrames.
     public boolean getLayoutHintLw(WindowManager.LayoutParams attrs, Rect taskBounds,
             DisplayFrames displayFrames, Rect outFrame, Rect outContentInsets, Rect outStableInsets,
@@ -7919,7 +7916,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
 
             case KeyEvent.KEYCODE_HOME:
-                if (down && !interactive) {
+                if (down && !interactive && mHomeWakeButton) {
                     isWakeKey = mHomeWakeScreen;
                     if (!isWakeKey) {
                         useHapticFeedback = false;
@@ -7968,12 +7965,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         isWakeKey = true;
                         startActivityAsUser(intent, UserHandle.CURRENT_OR_SELF);
                     }
-                }
-                break;
-
-            case KeyEvent.KEYCODE_HOME:
-                if (down && !interactive && mHomeWakeButton) {
-                    isWakeKey = true;
                 }
                 break;
 
@@ -8322,8 +8313,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         return true;
     }
 
-
-    /** {@inheritDoc} */
+   /** {@inheritDoc} */
     @Override
     public int interceptMotionBeforeQueueingNonInteractive(long whenNanos, int policyFlags) {
         if ((policyFlags & FLAG_WAKE) != 0) {
@@ -10768,28 +10758,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         pw.print(prefix); pw.println("Looper state:");
         mHandler.getLooper().dump(new PrintWriterPrinter(pw), prefix + "  ");
-    }
-
-    private static int getSystemUiVisibility(WindowState win, LayoutParams attrs) {
-        attrs = attrs != null ? attrs : win.getAttrs();
-        int vis = win != null ? win.getSystemUiVisibility()
-                : (attrs.systemUiVisibility | attrs.subtreeSystemUiVisibility);
-        return WindowManagerPolicyControl.getSystemUiVisibility(vis, attrs);
-    }
-
-    private static int getWindowFlags(WindowState win, LayoutParams attrs) {
-        attrs = attrs != null ? attrs : win.getAttrs();
-        return WindowManagerPolicyControl.getWindowFlags(attrs.flags, attrs);
-    }
-
-    private static int getPrivateWindowFlags(WindowState win, LayoutParams attrs) {
-        attrs = attrs != null ? attrs : win.getAttrs();
-        return WindowManagerPolicyControl.getPrivateWindowFlags(attrs.privateFlags, attrs);
-    }
-
-    private static int adjustClearableFlags(WindowState win, int clearableFlags) {
-        final LayoutParams attrs = win != null ? win.getAttrs() : null;
-        return WindowManagerPolicyControl.adjustClearableFlags(attrs, clearableFlags);
     }
 
     private void cancelTorchOff() {

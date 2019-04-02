@@ -377,12 +377,12 @@ public class Camera {
                 exposeAuxCamera = false;
             }
         }
-        int numberOfCameras = _getNumberOfCameras();
-        if (exposeAuxCamera == false && (numberOfCameras > 2)) {
+        int numberOfCameras = native_getNumberOfCameras();
+        if ((numberOfCameras > 2) && !shouldExposeAuxCamera()) {
             numberOfCameras = 2;
         }
         return numberOfCameras;
-    }
+}
 
     /**
      * Wether to expose Aux cameras

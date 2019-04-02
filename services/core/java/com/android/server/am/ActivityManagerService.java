@@ -586,8 +586,6 @@ public class ActivityManagerService extends IActivityManager.Stub
     // How long we wait for an attached process to publish its content providers
     // before we decide it must be hung.
     static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10*1000;
-    // How long we wait for provider to be notify before we decide it may be hang.
-    static final int CONTENT_PROVIDER_WAIT_TIMEOUT = 20*1000;
 
     /**
      * How long we wait for an provider to be published. Should be longer than

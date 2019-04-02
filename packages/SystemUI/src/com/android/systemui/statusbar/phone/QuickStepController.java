@@ -271,7 +271,7 @@ public class QuickStepController implements GestureHelper {
                     boolean isDoubleTapReally = deltaX * deltaX + deltaY * deltaY < sDoubleTapSquare;
                     if (isDoubleTapReally) {
                         mNavigationBarView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                        HavocUtils.switchScreenOff(mContext);
+                        ArsenicUtils.switchScreenOff(mContext);
                     }
                 } else {
                     // this is the first tap, let's go further and schedule a

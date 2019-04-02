@@ -20,7 +20,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContentResolver;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -41,11 +40,16 @@ import android.view.View;
 import com.android.systemui.Dependency;
 import com.android.systemui.UiOffloadThread;
 
+import lineageos.providers.LineageSettings;
+
 public class VisualizerView extends View
         implements Palette.PaletteAsyncListener {
 
     private static final String TAG = VisualizerView.class.getSimpleName();
     private static final boolean DEBUG = false;
+
+    private static final String LOCKSCREEN_VISUALIZER_ENABLED =
+            "lineagesecure:" + LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED;
 
     private Paint mPaint;
     private Visualizer mVisualizer;
@@ -230,7 +234,7 @@ public class VisualizerView extends View
 
     private void setVisualizerEnabled() {
         mVisualizerEnabled = Settings.Secure.getInt(mContext.getContentResolver(),
-                Settings.Secure.LOCKSCREEN_VISUALIZER_ENABLED, 0) == 1;
+                LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED, 0) == 1;
     }
 
     private void setAmbientVisualizerEnabled() {
@@ -420,7 +424,7 @@ public class VisualizerView extends View
         protected void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.Secure.getUriFor(
-                Settings.Secure.LOCKSCREEN_VISUALIZER_ENABLED),
+                LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED),
                 false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                 Settings.Secure.AMBIENT_VISUALIZER_ENABLED),
@@ -442,7 +446,7 @@ public class VisualizerView extends View
         public void onChange(boolean selfChange, Uri uri) {
             ContentResolver resolver = mContext.getContentResolver();
             if (uri.equals(Settings.Secure.getUriFor(
-                    Settings.Secure.LOCKSCREEN_VISUALIZER_ENABLED))) {
+                    LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED))) {
                 setVisualizerEnabled();
                 checkStateChanged();
                 updateViewVisibility();

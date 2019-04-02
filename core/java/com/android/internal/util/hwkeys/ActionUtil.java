@@ -67,7 +67,7 @@ import com.android.internal.util.hwkeys.ActionConstants.Defaults;
 import com.android.internal.util.hwkeys.Config.ActionConfig;
 import com.android.internal.util.hwkeys.Config.ButtonConfig;
 
-public final class ActionUtils {
+public final class ActionUtil {
     public static final String PACKAGE_SYSTEMUI = "com.android.systemui";
     public static final String PACKAGE_SETTINGS = "com.android.settings";
     public static final String CLASS_NAME_ICON_PICKER_GRID_ACTIVITY = "com.android.settings.smartnav.IconPackGridActivity";

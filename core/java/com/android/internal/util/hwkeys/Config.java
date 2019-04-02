@@ -411,12 +411,12 @@ public class Config {
         }
 
         public ActionConfig(Context ctx) {
-            label = ActionUtils.getFriendlyNameForUri(ctx, action);
+            label = ActionUtil.getFriendlyNameForUri(ctx, action);
         }
 
         public ActionConfig(Context ctx, String action) {
             this.action = action;
-            label = ActionUtils.getFriendlyNameForUri(ctx, action);
+            label = ActionUtil.getFriendlyNameForUri(ctx, action);
         }
 
         public ActionConfig(Context ctx, String action, String iconUri) {
@@ -478,7 +478,7 @@ public class Config {
         }
 
         public Drawable getDefaultIcon(Context ctx) {
-            return ActionUtils.getDrawableForAction(ctx, action);
+            return ActionUtil.getDrawableForAction(ctx, action);
         }
 
         /**
@@ -493,10 +493,10 @@ public class Config {
                 if (type.equals("iconpack") && items.size() == 3) {
                     String packageName = items.get(1);
                     String iconName = items.get(2);
-                    return ActionUtils.getDrawable(ctx, iconName, packageName);
+                    return ActionUtil.getDrawable(ctx, iconName, packageName);
                 } else if (type.equals("image") && items.size() == 2) {
                     String uri = items.get(1);
-                    return ActionUtils.getDrawable(ctx, Uri.parse(uri));
+                    return ActionUtil.getDrawable(ctx, Uri.parse(uri));
                 }
             }
             return null;
@@ -508,7 +508,7 @@ public class Config {
 
             //If icon doesn't exist (or is not set) fallback to action one
             if (drawable == null) {
-                drawable = ActionUtils.getDrawableForAction(ctx, action);
+                drawable = ActionUtil.getDrawableForAction(ctx, action);
             }
 
             return drawable;
@@ -550,7 +550,7 @@ public class Config {
             ArrayList<String> actionStrings = new ArrayList<String>();
             actionStrings.addAll(items);
             action = items.get(0);
-            label = ActionUtils.getFriendlyNameForUri(ctx, action);
+            label = ActionUtil.getFriendlyNameForUri(ctx, action);
             iconUri = items.get(2);
         }
 

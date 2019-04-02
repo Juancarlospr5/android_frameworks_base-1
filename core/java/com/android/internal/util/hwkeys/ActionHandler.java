@@ -255,18 +255,18 @@ public class ActionHandler {
             mIndexMap = new HashMap<String, Integer>();
             for (int i = 0; i < systemActions.length; i++) {
                 mIndexMap.put(systemActions[i].mAction, i);
-                mDrawables[i] = ActionUtils.getDrawable(res, systemActions[i].mIconRes,
+                mDrawables[i] = ActionUtil.getDrawable(res, systemActions[i].mIconRes,
                         systemActions[i].mResPackage);
-                mDarkDrawables[i] = ActionUtils.getDrawable(res, systemActions[i].mDarkIconRes,
+                mDarkDrawables[i] = ActionUtil.getDrawable(res, systemActions[i].mDarkIconRes,
                         systemActions[i].mResPackage);
             }
         }
 
         public void updateResources(Resources res) {
             for (int i = 0; i < mDrawables.length; i++) {
-                mDrawables[i] = ActionUtils.getDrawable(res, systemActions[i].mIconRes,
+                mDrawables[i] = ActionUtil.getDrawable(res, systemActions[i].mIconRes,
                         systemActions[i].mResPackage);
-                mDarkDrawables[i] = ActionUtils.getDrawable(res, systemActions[i].mDarkIconRes,
+                mDarkDrawables[i] = ActionUtil.getDrawable(res, systemActions[i].mDarkIconRes,
                         systemActions[i].mResPackage);
             }
         }
@@ -302,13 +302,13 @@ public class ActionHandler {
                     || TextUtils.equals(action, SYSTEMUI_TASK_MEDIA_NEXT)) {
                 continue;
             } else if (TextUtils.equals(action, SYSTEMUI_TASK_WIFIAP)
-                    && !ActionUtils.deviceSupportsMobileData(context)) {
+                    && !ActionUtil.deviceSupportsMobileData(context)) {
                 continue;
             } else if (TextUtils.equals(action, SYSTEMUI_TASK_BT)
-                    && !ActionUtils.deviceSupportsBluetooth()) {
+                    && !ActionUtil.deviceSupportsBluetooth()) {
                 continue;
             } else if (TextUtils.equals(action, SYSTEMUI_TASK_TORCH)
-                 && !ActionUtils.deviceSupportsFlashLight(context)) {
+                 && !ActionUtil.deviceSupportsFlashLight(context)) {
                 continue;
             } else if (TextUtils.equals(action, SYSTEMUI_TASK_CAMERA)
                     && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
@@ -503,7 +503,7 @@ public class ActionHandler {
         }
         // not a system action, should be intent
         if (!action.startsWith(SYSTEM_PREFIX)) {
-            Intent intent = ActionUtils.getIntent(action);
+            Intent intent = ActionUtil.getIntent(action);
             if (intent == null) {
                 return;
             }
@@ -527,7 +527,7 @@ public class ActionHandler {
         }
         // not a system action, should be intent
         if (!action.startsWith(SYSTEM_PREFIX)) {
-            Intent intent = ActionUtils.getIntent(action);
+            Intent intent = ActionUtil.getIntent(action);
             if (intent == null) {
                 return;
             }
@@ -1049,10 +1049,10 @@ public class ActionHandler {
                         pkgName = pkg;
                     }
 
-                    Resources systemUIRes = ActionUtils.getResourcesForPackage(context, ActionUtils.PACKAGE_SYSTEMUI);
-                    int ident = systemUIRes.getIdentifier("app_killed_message", ActionUtils.STRING, ActionUtils.PACKAGE_SYSTEMUI);
+                    Resources systemUIRes = ActionUtil.getResourcesForPackage(context, ActionUtil.PACKAGE_SYSTEMUI);
+                    int ident = systemUIRes.getIdentifier("app_killed_message", ActionUtil.STRING, ActionUtil.PACKAGE_SYSTEMUI);
                     String toastMsg = systemUIRes.getString(ident, pkgName);
-                    Context ctx = getPackageContext(context, ActionUtils.PACKAGE_SYSTEMUI);
+                    Context ctx = getPackageContext(context, ActionUtil.PACKAGE_SYSTEMUI);
                     Toast.makeText(ctx != null ? ctx : context, toastMsg, Toast.LENGTH_SHORT).show();
                     return;
                 } else {
@@ -1175,12 +1175,12 @@ public class ActionHandler {
         } else {
             PackageManager packageManager = context.getPackageManager();
             String pkgName;
-            Resources systemUIRes = ActionUtils.getResourcesForPackage(context,
-  		    	    ActionUtils.PACKAGE_SYSTEMUI);
-            int ident = systemUIRes.getIdentifier("quick_settings_sound_search_no_app", ActionUtils.STRING,
-                    ActionUtils.PACKAGE_SYSTEMUI);
-            String toastMsg = systemUIRes.getString(ident, ActionUtils.PACKAGE_SYSTEMUI);
-            Context ctx = getPackageContext(context, ActionUtils.PACKAGE_SYSTEMUI);
+            Resources systemUIRes = ActionUtil.getResourcesForPackage(context,
+  		    	    ActionUtil.PACKAGE_SYSTEMUI);
+            int ident = systemUIRes.getIdentifier("quick_settings_sound_search_no_app", ActionUtil.STRING,
+                    ActionUtil.PACKAGE_SYSTEMUI);
+            String toastMsg = systemUIRes.getString(ident, ActionUtil.PACKAGE_SYSTEMUI);
+            Context ctx = getPackageContext(context, ActionUtil.PACKAGE_SYSTEMUI);
             Toast.makeText(ctx != null ? ctx : context, toastMsg, Toast.LENGTH_SHORT)
             		.show();
             return;

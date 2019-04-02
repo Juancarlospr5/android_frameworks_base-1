@@ -169,7 +169,7 @@ import com.android.internal.statusbar.NotificationVisibility;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.ThemeAccentUtils;
 import com.android.internal.util.hwkeys.ActionConstants;
-import com.android.internal.util.hwkeys.ActionUtils;
+import com.android.internal.util.hwkeys.ActionUtil;
 import com.android.internal.util.hwkeys.PackageMonitor;
 import com.android.internal.util.hwkeys.PackageMonitor.PackageChangedListener;
 import com.android.internal.util.hwkeys.PackageMonitor.PackageState;
@@ -291,6 +291,7 @@ import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.statusbar.screen_gestures.ScreenGesturesController;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
+import com.android.systemui.tuner.TunerService;
 import com.android.systemui.volume.VolumeComponent;
 
 import lineageos.hardware.LiveDisplayManager;
@@ -304,7 +305,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class StatusBar extends SystemUI implements DemoMode,
+public class StatusBar extends SystemUI implements DemoMode, TunerService.Tunable,
         DragDownHelper.DragDownCallback, ActivityStarter, OnUnlockMethodChangedListener,
         OnHeadsUpChangedListener, CommandQueue.Callbacks, ZenModeController.Callback,
         ColorExtractor.OnColorsChangedListener, ConfigurationListener, NotificationPresenter, PackageChangedListener {
@@ -880,7 +881,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         createAndAddWindows();
 
 	mSbSettingsObserver.observe();
-	mSbSettingsObserver.update;
+	mSbSettingsObserver.update();
 
         // Make sure we always have the most current wallpaper info.
         IntentFilter wallpaperChangedFilter = new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED);
@@ -1099,7 +1100,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         boolean showNav = Settings.Secure.getInt(mContext.getContentResolver(),
                 Settings.Secure.NAVIGATION_BAR_VISIBLE,
-                ActionUtils.hasNavbarByDefault(mContext) ? 1 : 0) != 0;
+                ActionUtil.hasNavbarByDefault(mContext) ? 1 : 0) != 0;
         if (DEBUG)
             Log.v(TAG, "hasNavigationBar=" + showNav);
         if (showNav) {
@@ -3111,6 +3112,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         return mStatusBarView.getBarTransitions();
     }
 
+    @Override  // CommandQueue
+    public void setAutoRotate(boolean enabled) {
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.ACCELEROMETER_ROTATION,
+                enabled ? 1 : 0);
+    }
+
     protected int computeBarMode(int oldVis, int newVis,
             int transientFlag, int translucentFlag, int transparentFlag) {
         final int oldMode = barMode(oldVis, transientFlag, translucentFlag, transparentFlag);
@@ -4146,15 +4154,15 @@ public class StatusBar extends SystemUI implements DemoMode,
             final Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (!ActionUtils.hasNavbarByDefault(ctx)) {
-                        ActionUtils.resolveAndUpdateButtonActions(ctx,
+                    if (!ActionUtil.hasNavbarByDefault(ctx)) {
+                        ActionUtil.resolveAndUpdateButtonActions(ctx,
                                 ActionConstants
                                         .getDefaults(ActionConstants.HWKEYS));
                     }
-                    ActionUtils
+                    ActionUtil
                             .resolveAndUpdateButtonActions(ctx, ActionConstants
                                     .getDefaults(ActionConstants.SMARTBAR));
-                    ActionUtils.resolveAndUpdateButtonActions(ctx,
+                    ActionUtil.resolveAndUpdateButtonActions(ctx,
                             ActionConstants.getDefaults(ActionConstants.FLING));
 		}
             });
@@ -6308,13 +6316,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         public void onChange(boolean selfChange) {
             boolean showing = Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.NAVIGATION_BAR_VISIBLE,
-                    ActionUtils.hasNavbarByDefault(mContext) ? 1 : 0) != 0;
+                    ActionUtil.hasNavbarByDefault(mContext) ? 1 : 0) != 0;
             if (!showing && mNavigationBar != null && mNavigationBarView != null) {
                 removeNavigationBar();
             } else if (showing && mNavigationBar == null && mNavigationBarView == null) {
                 createNavigationBar();
             }
-            if (!ActionUtils.hasNavbarByDefault(mContext)) {
+            if (!ActionUtil.hasNavbarByDefault(mContext)) {
                 Intent intent = new Intent("com.cyanogenmod.action.UserChanged");
                 intent.setPackage("com.android.settings");
                 mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));

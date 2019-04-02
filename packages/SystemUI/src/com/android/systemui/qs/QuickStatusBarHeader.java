@@ -82,7 +82,7 @@ import java.util.Objects;
  */
 public class QuickStatusBarHeader extends RelativeLayout implements
         View.OnClickListener, NextAlarmController.NextAlarmChangeCallback,
-        ZenModeController.Callback, Tunable, TunerService.Tunable {
+        ZenModeController.Callback, TunerService.Tunable {
     private static final String TAG = "QuickStatusBarHeader";
     private static final boolean DEBUG = false;
     public static final String QS_SHOW_INFO_HEADER = "qs_show_info_header";

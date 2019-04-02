@@ -49,8 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.android.internal.telephony.util.TelephonyExtUtils;
-import com.android.internal.telephony.util.TelephonyExtUtils.ProvisioningChangedListener;
+//import com.android.internal.telephony.util.TelephonyExtUtils;
+//import com.android.internal.telephony.util.TelephonyExtUtils.ProvisioningChangedListener;
 
 public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallback,
         SecurityController.SecurityControllerCallback, Tunable, ProvisioningChangedListener {

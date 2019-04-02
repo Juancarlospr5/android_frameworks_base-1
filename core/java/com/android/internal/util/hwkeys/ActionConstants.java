@@ -306,40 +306,40 @@ public class ActionConstants {
 
         static {
             defMap.put(CONFIG_fling_touchslop_increase_factor, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_fling_touchslop_increase_factor,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_fling_touchslop_increase_factor,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipePortraitLeft, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipePortraitLeft,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipePortraitLeft,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipePortraitRight, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipePortraitRight,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipePortraitRight,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipeLandscapeLeft, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeLandscapeLeft,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeLandscapeLeft,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipeLandscapeRight, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeLandscapeRight,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeLandscapeRight,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipeVerticalUp, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeVerticalUp,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeVerticalUp,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_FlingLongSwipeVerticalDown, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeVerticalDown,
-                    ActionUtils.FORMAT_FLOAT, ActionUtils.DIMEN));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_FlingLongSwipeVerticalDown,
+                    ActionUtil.FORMAT_FLOAT, ActionUtil.DIMEN));
             defMap.put(CONFIG_pulsePathEffect_1, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulsePathEffect_1, ActionUtils.DIMEN_PIXEL));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulsePathEffect_1, ActionUtil.DIMEN_PIXEL));
             defMap.put(CONFIG_pulsePathEffect_2, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulsePathEffect_2, ActionUtils.DIMEN_PIXEL));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulsePathEffect_2, ActionUtil.DIMEN_PIXEL));
             defMap.put(CONFIG_pulsePathStrokeWidth, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulsePathStrokeWidth, ActionUtils.DIMEN_PIXEL));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulsePathStrokeWidth, ActionUtil.DIMEN_PIXEL));
             defMap.put(CONFIG_pulseFillColor, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulseFillColor, ActionUtils.COLOR));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulseFillColor, ActionUtil.COLOR));
             defMap.put(CONFIG_pulseDivisions, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulseDivisions, ActionUtils.INT));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulseDivisions, ActionUtil.INT));
             defMap.put(CONFIG_pulseDbFuzzFactor, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulseDbFuzzFactor, ActionUtils.INT));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulseDbFuzzFactor, ActionUtil.INT));
             defMap.put(CONFIG_pulseDbFuzz, new ConfigHolder(
-                    ActionUtils.PACKAGE_SYSTEMUI, CONFIG_pulseDbFuzz, ActionUtils.INT));
+                    ActionUtil.PACKAGE_SYSTEMUI, CONFIG_pulseDbFuzz, ActionUtil.INT));
         }
 
         private static final Map<String, ConfigMap> configMap = new HashMap<String, ConfigMap>();
@@ -605,9 +605,9 @@ public class ActionConstants {
         Bundle b = new Bundle();
         for (Map.Entry<String, ConfigHolder> entry : configMap.entrySet()) {
             ConfigHolder holder = entry.getValue();
-            Object obj = ActionUtils.getValue(ctx, holder.name, holder.type, holder.format,
+            Object obj = ActionUtil.getValue(ctx, holder.name, holder.type, holder.format,
                     holder.pkg);
-            ActionUtils.putValue(holder.name, obj, holder.type, b);
+            ActionUtil.putValue(holder.name, obj, holder.type, b);
         }
         return b;
     }

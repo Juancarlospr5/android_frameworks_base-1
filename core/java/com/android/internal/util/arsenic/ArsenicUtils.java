@@ -16,6 +16,7 @@
 
 package com.android.internal.util.arsenic;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog; 
 import android.app.IActivityManager;
 import android.content.Context;

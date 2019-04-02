@@ -819,6 +819,7 @@ public final class NotificationChannel implements Parcelable {
         }
         if (getLightOffTime() != DEFAULT_OFF_TIME) {
             out.attribute(null, ATT_OFF_TIME, Integer.toString(getLightOffTime()));
+        }
         if (shouldLightOnZen()) {
             out.attribute(null, ATT_ON_ZEN, Boolean.toString(shouldLightOnZen()));
         }

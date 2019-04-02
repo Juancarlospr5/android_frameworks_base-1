@@ -3441,7 +3441,7 @@
 
   <java-symbol type="string" name="config_defaultAssistantComponentName" />
 
-  <java-symbol type="integer" name="config_sms_authorization_timeout_ms" />
+  <!--<java-symbol type="integer" name="config_sms_authorization_timeout_ms" /> -->
   <java-symbol type="bool" name="config_sms_authorization_enabled" />
 
   <!-- Minimal height of bottom stack when IME is displayed -->

@@ -2312,6 +2312,8 @@ public final class Settings {
 
             // At one time in System, then Global, but now back in Secure
             MOVED_TO_SECURE.add(Secure.INSTALL_NON_MARKET_APPS);
+
+            MOVED_TO_SECURE.add(Secure.VOLUME_LINK_NOTIFICATION);
         }
 
         private static final HashSet<String> MOVED_TO_GLOBAL;
@@ -3316,6 +3318,12 @@ public final class Settings {
         public static final int SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1;
 
         /**
+         * Whether to show the IME switcher in the status bar
+         * @hide
+         */
+	public static final String STATUS_BAR_IME_SWITCHER = "status_bar_ime_switcher";
+
+        /**
          * Control whether the process CPU usage meter should be shown.
          *
          * @deprecated This functionality is no longer available as of
@@ -4285,6 +4293,24 @@ public final class Settings {
         public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
 
         /**
+         * Override and forcefully disable the fullscreen keyboard
+         * @hide
+         */
+        public static final String ENABLE_FULLSCREEN_KEYBOARD = "enable_fullscreen_keyboard";
+
+        /**
+         * Automatic keyboard rotation timeout.  0 to disable completely.
+         * @hide
+         */
+        public static final String KEYBOARD_ROTATION_TIMEOUT = "keyboard_rotation_timeout";
+
+        /**
+         * Forces formal text input.  1 to replace emoticon key with enter key.
+         * @hide
+         */
+        public static final String FORMAL_TEXT_INPUT = "formal_text_input";
+
+        /**
          * Whether the phone volume up / down effect should be played
          * @hide
          */
@@ -4307,12 +4333,6 @@ public final class Settings {
          * @hide
          */
         public static final String  RECENTS_CLEAR_ALL_LOCATION = "recents_clear_all_location";
-
-        /**
-         * Whether to show the battery info on the lockscreen while charging
-         * @hide
-         */
-        public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
 
         /**
          * Indicates whether ANBI (Accidental navigation button interaction) is enabled.
@@ -4491,13 +4511,6 @@ public final class Settings {
         public static final String AUDIO_PANEL_VIEW_POSITION = "audio_panel_view_position";
 
         /**
-         * Whether to display lock in the power menu
-         *
-         * @hide
-         */
-        public static final String POWERMENU_LOCKDOWN = "powermenu_lockdown";
-
-        /**
          * Whether to show the battery bar
          * @hide
          */
@@ -4550,14 +4563,6 @@ public final class Settings {
         public static final String STATUS_BAR_CLOCK_AUTO_HIDE = "status_bar_clock_auto_hide";
         public static final String STATUS_BAR_CLOCK_AUTO_HIDE_HDURATION = "status_bar_clock_auto_hide_hduration";
         public static final String STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION = "status_bar_clock_auto_hide_sduration";
-
-        /**
-         * @hide
-         */
-        public static final String DEVICE_FEATURE_SETTINGS = "device_feature_settings";
-
-        /** @hide */
-        private static final Validator DEVICE_FEATURE_SETTINGS_VALIDATOR = ANY_STRING_VALIDATOR;
 
         /**
          * Show or hide clock
@@ -4978,20 +4983,6 @@ public final class Settings {
         public static final String POWERMENU_ADVANCED_REBOOT = "powermenu_advanced_reboot";
 
         /**
-         * Whether to display the screenshot option on the power menu
-         *
-         * @hide
-         */
-        public static final String POWERMENU_SCREENSHOT = "powermenu_screenshot";
-
-        /**
-         * Whether to display the airplane option on the power menu
-         *
-         * @hide
-         */
-        public static final String POWERMENU_AIRPLANE = "powermenu_airplane";
-
-         /**
          * Whether to display the power menu dialog while on the lockscreen
          * @hide
          */
@@ -5151,12 +5142,6 @@ public final class Settings {
         public static final String PULSE_APPS_BLACKLIST = "pulse_apps_blacklist";
 
         /**
-         * Whether to show the visualizer on the lock screen
-         * @hide
-         */
-        public static final String LOCKSCREEN_VISUALIZER_ENABLED = "lockscreen_visualizer_enabled";
-
-        /**
          *  Weather to use a custom color for the visualizer on the lock screen
          * @hide
          */
@@ -5167,6 +5152,12 @@ public final class Settings {
          * @hide
          */
         public static final String LOCK_SCREEN_VISUALIZER_CUSTOM_COLOR = "lock_screen_visualizer_custom_color";
+
+        /**
+         * Whether to show the visualizer on the lock screen
+         * @hide
+         */
+        public static final String LOCKSCREEN_VISUALIZER_ENABLED = "lockscreen_visualizer_enabled";
 
         /**
          * Whether to launch default music player when headset plugged in
@@ -5386,6 +5377,12 @@ public final class Settings {
 	     ** @hide
 	     **/
         public static final String LOCK_CLOCK_FONTS = "lock_clock_fonts";
+
+        /**
+         * Enable\Disable Bluetooth Battery bar
+         * @hide
+         */
+	public static final String BLUETOOTH_SHOW_BATTERY = "bluetooth_show_battery";
 
         /**
          * Which kind of style you might want to see on Recents UI
@@ -10299,6 +10296,14 @@ public final class Settings {
                 "packages_to_clear_data_before_full_restore";
 
         /**
+         * Boolean value whether to link ringtone and notification volume
+         * @hide
+         */
+        public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
+
+        private static final Validator VOLUME_LINK_NOTIFICATION_VALIDATOR = BOOLEAN_VALIDATOR;
+
+        /**
          * Enable face auto unlock on secure lock screens
          *
          * @hide
@@ -11024,7 +11029,8 @@ public final class Settings {
             HUSH_GESTURE_USED,
             STATUS_BAR_BATTERY_STYLE,
             WIFI_DISCONNECT_DELAY_DURATION,
-            FP_SWIPE_TO_DISMISS_NOTIFICATIONS
+            FP_SWIPE_TO_DISMISS_NOTIFICATIONS,
+            VOLUME_LINK_NOTIFICATION,
         };
 
         /**
@@ -11174,6 +11180,7 @@ public final class Settings {
             VALIDATORS.put(STATUS_BAR_BATTERY_STYLE, STATUS_BAR_BATTERY_STYLE_VALIDATOR);
             VALIDATORS.put(WIFI_DISCONNECT_DELAY_DURATION, WIFI_DISCONNECT_DELAY_DURATION_VALIDATOR);
             VALIDATORS.put(FP_SWIPE_TO_DISMISS_NOTIFICATIONS, FP_SWIPE_TO_DISMISS_NOTIFICATIONS_VALIDATOR);
+            VALIDATORS.put(VOLUME_LINK_NOTIFICATION, VOLUME_LINK_NOTIFICATION_VALIDATOR);
             VALIDATORS.put(LOCK_SCREEN_ALLOW_PRIVATE_NOTIFICATIONS, BOOLEAN_VALIDATOR);
             VALIDATORS.put(LOCK_SCREEN_SHOW_NOTIFICATIONS, BOOLEAN_VALIDATOR);
         }
@@ -14639,15 +14646,6 @@ public final class Settings {
          * @hide
          */
         public static final String BLOCKED_SLICES = "blocked_slices";
-
-        /**
-         * Defines global runtime overrides to window policy style.
-         *
-         * See {@link android.view.WindowManagerPolicyControl} for value definitions.
-         *
-         * @hide
-         */
-        public static final String POLICY_CONTROL_STYLE = "policy_control_style";
 
         /**
          * Defines global zen mode.  ZEN_MODE_OFF, ZEN_MODE_IMPORTANT_INTERRUPTIONS,

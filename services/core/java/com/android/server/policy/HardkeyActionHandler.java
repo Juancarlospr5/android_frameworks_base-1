@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import com.android.internal.util.hwkeys.ActionConstants;
 import com.android.internal.util.hwkeys.ActionHandler;
-import com.android.internal.util.hwkeys.ActionUtils;
+import com.android.internal.util.hwkeys.ActionUtil;
 import com.android.internal.util.hwkeys.Config;
 import com.android.internal.util.hwkeys.Config.ActionConfig;
 import com.android.internal.util.hwkeys.Config.ButtonConfig;
@@ -116,8 +116,8 @@ public class HardkeyActionHandler {
         mHandler = handler;
 //        mPm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
-        mDeviceHardwareKeys = ActionUtils.getInt(context, "config_deviceHardwareKeys",
-                ActionUtils.PACKAGE_ANDROID);
+        mDeviceHardwareKeys = ActionUtil.getInt(context, "config_deviceHardwareKeys",
+                ActionUtil.PACKAGE_ANDROID);
 
         mBackButton = new HardKeyButton(mActionReceiver, handler);
         mHomeButton = new HardKeyButton(mActionReceiver, handler);
